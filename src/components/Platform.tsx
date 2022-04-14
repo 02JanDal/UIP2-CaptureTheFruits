@@ -2,15 +2,15 @@ import { FC } from "react";
 import { Position } from "../types";
 import PositionableDiv from "./PositionableDiv";
 
-const Platform: FC<Position & { width: number }> = (props) => {
-  const { x, y, width } = props;
+const Platform: FC<Position & { width: number; height: number }> = (props) => {
+  const { x, y, width, height } = props;
 
   return (
     <PositionableDiv
       x={x}
       y={y}
       width={width}
-      height={100}
+      height={height}
       style={{ backgroundColor: "brown" }}
     >
       Platform
