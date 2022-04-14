@@ -4,9 +4,16 @@ import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
 import { playingField } from "../playingFieldDefinition";
+import usePhysicsController from "../hooks/usePhysicsController";
 
 const PlayingField: FC = (props) => {
-  const [playerPos, setPlayerPos] = useState<Position>({ x: 100, y: 100 });
+  const { setPlayerVerticalVelocity, playerPos, setPlayerPos } =
+    usePhysicsController(
+      playingField,
+      (index, points) =>
+        console.log(`Touched fruit ${index} worth ${points} points`),
+      () => console.log("fell off")
+    );
 
   return (
     <div
@@ -15,6 +22,14 @@ const PlayingField: FC = (props) => {
         width: `${playingField.width}px`,
         height: "100%",
       }}
+      // some placeholder interaction just to test the physics
+      onDoubleClick={() => setPlayerVerticalVelocity(300)}
+      onClick={(e) =>
+        setPlayerPos({
+          x: e.clientX,
+          y: (e.target as HTMLDivElement).clientHeight - e.clientY,
+        })
+      }
     >
       <Background />
       {playingField.platforms.map((p, i) => (
