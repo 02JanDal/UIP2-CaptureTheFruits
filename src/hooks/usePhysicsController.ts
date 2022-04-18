@@ -3,8 +3,8 @@ import { Position } from "../types";
 import { useRef, useState } from "react";
 import { useAnimationFrame } from "./useAnimationFrame";
 
-const PLAYER_WIDTH = 20;
-const PLAYER_HEIGHT = 50;
+const PLAYER_WIDTH = 30;
+const PLAYER_HEIGHT = 60;
 const GRAVITY_ACCELERATION = 200;
 
 function intersects(
@@ -23,12 +23,13 @@ function intersects(
     bottom: b.y,
     top: b.y + b.height,
   };
-  return (
-    a_.left <= b_.right &&
-    b_.left <= a_.right &&
-    a_.bottom <= b_.top &&
-    b_.bottom <= a_.top
-  );
+
+    var results : Boolean = (a_.left <= b_.right &&
+                               b_.left <= a_.right &&
+                               a_.bottom <= b_.top &&
+                               b_.bottom <= a_.top);
+  return ( results );
+
 }
 
 export default function usePhysicsController(
