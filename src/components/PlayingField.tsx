@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Background from "./Background";
 import Platform from "./Platform";
 import Character from "./Character";
@@ -7,11 +7,22 @@ import { playingField } from "../playingFieldDefinition";
 import usePhysicsController from "../hooks/usePhysicsController";
 
 const PlayingField: FC = (props) => {
+  const [touchedFruits, setTouchedFruits] = useState<number[]>([]);
+  const [pf, setPF] = useState(playingField);
   const { setPlayerVerticalVelocity, playerPos, setPlayerPos } =
     usePhysicsController(
       playingField,
-      (index, points) =>
-        console.log(`Touched fruit ${index} worth ${points} points`),
+      (index, points) => {
+        setPF({
+          ...pf,
+          fruits: pf.fruits.slice(index, index),
+        });
+
+        if (!touchedFruits.includes(index)) {
+          setTouchedFruits([...touchedFruits, index]);
+          console.log(`Touched fruit ${index} worth ${points} points`);
+        }
+      },
       () => console.log("fell off")
     );
 
@@ -35,9 +46,11 @@ const PlayingField: FC = (props) => {
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
-      {playingField.fruits.map((f, i) => (
-        <Fruit key={i} x={f.x} y={f.y} points={f.points} />
-      ))}
+      {playingField.fruits
+        .filter((_, index) => !touchedFruits.includes(index))
+        .map((f, i) => (
+          <Fruit key={i} x={f.x} y={f.y} points={f.points} />
+        ))}
       <Character x={playerPos.x} y={playerPos.y} />
     </div>
   );
