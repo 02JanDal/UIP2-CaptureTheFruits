@@ -3,11 +3,11 @@ import { Position } from "../types";
 import { useRef, useState } from "react";
 import { useAnimationFrame } from "./useAnimationFrame";
 
-const PLAYER_WIDTH = 30;
-const PLAYER_HEIGHT = 60;
+export const PLAYER_WIDTH = 30;
+export const PLAYER_HEIGHT = 60;
 const GRAVITY_ACCELERATION = 200;
 
-function intersects(
+export function intersects(
   a: { x: number; y: number; width: number; height: number },
   b: { x: number; y: number; width: number; height: number }
 ) {
@@ -24,22 +24,22 @@ function intersects(
     top: b.y + b.height,
   };
 
-    var results : Boolean = (a_.left <= b_.right &&
-                               b_.left <= a_.right &&
-                               a_.bottom <= b_.top &&
-                               b_.bottom <= a_.top);
-  return ( results );
-
+  var results: Boolean =
+    a_.left <= b_.right &&
+    b_.left <= a_.right &&
+    a_.bottom <= b_.top &&
+    b_.bottom <= a_.top;
+  return results;
 }
 
 export default function usePhysicsController(
   playingField: PlayingFieldDefinition,
-  onTouchesFruit: (index: number, points: number) => void,
   onFellOff: () => void
 ) {
   const [playerPos, setPlayerPos] = useState<Position>(
     playingField.playerStart
   );
+  const [onGround, setOnGround] = useState(false);
   const playerVerticalVelocity = useRef(0);
 
   useAnimationFrame((delta) => {
@@ -71,19 +71,10 @@ export default function usePhysicsController(
       playerVerticalVelocity.current += (-GRAVITY_ACCELERATION * delta) / 1000;
     }
 
+    setOnGround(onGround);
+
     if (pos.y + PLAYER_HEIGHT < 0) {
       onFellOff();
-    } else {
-      playingField.fruits.forEach((fruit, index) => {
-        if (
-          intersects(
-            { ...fruit, width: 0, height: 0 },
-            { ...pos, width: PLAYER_WIDTH, height: PLAYER_HEIGHT }
-          )
-        ) {
-          onTouchesFruit(index, fruit.points);
-        }
-      });
     }
 
     setPlayerPos(pos);
@@ -94,5 +85,6 @@ export default function usePhysicsController(
       (playerVerticalVelocity.current = v),
     playerPos,
     setPlayerPos,
+    onGround,
   };
 }

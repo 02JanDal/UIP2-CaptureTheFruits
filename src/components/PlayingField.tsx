@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import { FC, useState } from "react";
 import Background from "./Background";
 import Platform from "./Platform";
 import Character from "./Character";
@@ -7,35 +7,27 @@ import { playingField } from "../playingFieldDefinition";
 import usePhysicsController from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
+import useFruitController from "../hooks/useFruitController";
 
 const PlayingField: FC = (props) => {
-
-  const [touchedFruits, setTouchedFruits] = useState<number[]>([]);
-  const [pf, setPF] = useState(playingField);
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
 
-  const { setPlayerVerticalVelocity, playerPos, setPlayerPos } =
-    usePhysicsController(
-      playingField,
-        (index, points) => {
-            setPF({
-                ...pf,
-                fruits: pf.fruits.slice(index, index),
-            });
+  const { setPlayerVerticalVelocity, playerPos, setPlayerPos, onGround } =
+    usePhysicsController(playingField, () => console.log("fell off"));
 
-            if (!touchedFruits.includes(index)) {
-                setTouchedFruits([...touchedFruits, index]);
-                setPoints(currentPoints + points);
-                console.log(currentPoints);
-                if (currentPoints + points < 0 && points === -5){
-                    setLives(currentLives - 1);
-                }
-                console.log(`Touched fruit ${index} worth ${points} points`);
-            }
-        },
-      () => console.log("fell off")
-    );
+  const { fruits } = useFruitController(
+    playingField.fruits,
+    playerPos,
+    (points) => {
+      setPoints(currentPoints + points);
+      console.log(currentPoints);
+      if (currentPoints + points < 0 && points === -5) {
+        setLives(currentLives - 1);
+      }
+      console.log(`Touched fruit worth ${points} points`);
+    }
+  );
 
   return (
     <div
@@ -57,15 +49,17 @@ const PlayingField: FC = (props) => {
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
-
-      {playingField.fruits
-          .filter((_, index) => !touchedFruits.includes(index))
-          .map((f, i) => (
-              <Fruit key={i} x={f.x} y={f.y} points={f.points} />
+      {fruits.map((f, i) => (
+        <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
-      <Lives x={1250} y={580} width={50} height={100} lives={currentLives}/>
-        <Points x={1180} y={580} width={50} height={100} points={currentPoints}/>
-        <Character x={playerPos.x} y={playerPos.y} />
+      <Lives x={1250} y={580} width={50} height={100} lives={currentLives} />
+      <Points x={1180} y={580} width={50} height={100} points={currentPoints} />
+      <Character
+        x={playerPos.x}
+        y={playerPos.y}
+        jumping={!onGround}
+        walking={false}
+      />
     </div>
   );
 };
