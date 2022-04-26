@@ -6,7 +6,7 @@ const PositionableDiv: FC<
     width: number;
     height: number;
     isCenterPosition?: boolean;
-    style: Omit<CSSProperties, "width" | "height">;
+    style?: Omit<CSSProperties, "width" | "height">;
   }
 > = (props) => {
   const { x, y, width, height, isCenterPosition, style, children } = props;
