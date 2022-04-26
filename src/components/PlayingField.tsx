@@ -6,12 +6,14 @@ import Fruit from "./Fruit";
 import { playingField } from "../playingFieldDefinition";
 import usePhysicsController from "../hooks/usePhysicsController";
 import Points from "./Points";
+import Lives from "./Lives";
 
 const PlayingField: FC = (props) => {
 
   const [touchedFruits, setTouchedFruits] = useState<number[]>([]);
   const [pf, setPF] = useState(playingField);
   const [currentPoints, setPoints] = useState(0);
+  const [currentLives, setLives] = useState(3);
 
   const { setPlayerVerticalVelocity, playerPos, setPlayerPos } =
     usePhysicsController(
@@ -25,12 +27,13 @@ const PlayingField: FC = (props) => {
             if (!touchedFruits.includes(index)) {
                 setTouchedFruits([...touchedFruits, index]);
                 setPoints(currentPoints + points);
+                console.log(currentPoints);
+                if (currentPoints + points < 0 && points === -5){
+                    setLives(currentLives - 1);
+                }
                 console.log(`Touched fruit ${index} worth ${points} points`);
             }
         },
-      // (index, points) =>
-      //     setPoints(currentPoints + points),
-        // console.log(`Touched fruit ${index} worth ${points} points`),
       () => console.log("fell off")
     );
 
@@ -60,8 +63,9 @@ const PlayingField: FC = (props) => {
           .map((f, i) => (
               <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
-      <Points x={1250} y={600} width={50} height={100} points={currentPoints}/>
-      <Character x={playerPos.x} y={playerPos.y} />
+      <Lives x={1250} y={580} width={50} height={100} lives={currentLives}/>
+        <Points x={1180} y={580} width={50} height={100} points={currentPoints}/>
+        <Character x={playerPos.x} y={playerPos.y} />
     </div>
   );
 };

@@ -16,9 +16,9 @@ export const playingField: PlayingFieldDefinition = {
   ],
   fruits: [
     // fruits on the flying platform
-    { x: 200, y: 270, points: 10 },
-    { x: 250, y: 270, points: 10 },
-    { x: 300, y: 270, points: 10 },
+    { x: 200, y: 270, points: -5 },
+    { x: 250, y: 270, points: -5 },
+    { x: 300, y: 270, points: -5 },
     { x: 350, y: 270, points: 10 },
     { x: 400, y: 270, points: 10 },
     // fruits on the ground
