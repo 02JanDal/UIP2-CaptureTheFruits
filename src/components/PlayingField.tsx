@@ -16,7 +16,7 @@ const PlayingField: FC = (props) => {
   const { setPlayerVerticalVelocity, playerPos, setPlayerPos, onGround } =
     usePhysicsController(playingField, () => console.log("fell off"));
 
-  const { fruits } = useFruitController(
+  const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
     playerPos,
     (points) => {
@@ -24,6 +24,13 @@ const PlayingField: FC = (props) => {
       console.log(currentPoints);
       if (currentPoints + points < 0 && points === -5) {
         setLives(currentLives - 1);
+      }
+      // Will tidy this up in a new function
+      if (currentLives - 1 <= 0){
+          setPoints(0);
+          setLives(3);
+          setPlayerPos(playingField.playerStart);
+          setTouchedFruits([]);
       }
       console.log(`Touched fruit worth ${points} points`);
     }

@@ -6,6 +6,7 @@ import {
   PLAYER_HEIGHT,
   PLAYER_WIDTH,
 } from "./usePhysicsController";
+import lives from "../components/Lives";
 
 export default function useFruitController(
   fruits: PlayingFieldDefinition["fruits"],
@@ -31,5 +32,6 @@ export default function useFruitController(
 
   return {
     fruits: fruits.filter((_, index) => !touchedFruits.includes(index)),
+    setTouchedFruits,
   };
 }
