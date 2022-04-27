@@ -14,7 +14,11 @@ const PlayingField: FC = (props) => {
   const [currentLives, setLives] = useState(3);
 
   const { setPlayerVerticalVelocity, playerPos, setPlayerPos, onGround } =
-    usePhysicsController(playingField, () => console.log("fell off"));
+    usePhysicsController(playingField, () => {
+        // Bug: this doesnt work somehow
+        setPlayerPos(playingField.playerStart);
+        console.log("fell off");
+    });
 
   const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
