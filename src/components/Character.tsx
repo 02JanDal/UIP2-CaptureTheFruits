@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Position } from "../types";
 import PositionableDiv from "./PositionableDiv";
 import imageStand from "../images/char-stand.png";
@@ -12,11 +12,12 @@ import imageWalk6 from "../images/char-walk-6.png";
 import imageWalk7 from "../images/char-walk-7.png";
 import imageWalk8 from "../images/char-walk-8.png";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
+import { PLAYER_HEIGHT, PLAYER_WIDTH } from "../hooks/usePhysicsController";
 
-const Character: FC<Position & { walking: boolean; jumping: boolean }> = (
-  props
-) => {
-  const { x, y, walking, jumping } = props;
+const Character: FC<
+  Position & { walking: boolean; jumping: boolean; facing: "left" | "right" }
+> = (props) => {
+  const { x, y, walking, jumping, facing } = props;
 
   const [walkTime, setWalkTime] = useState(0);
   useAnimationFrame((delta) => setWalkTime(walkTime + delta));
@@ -33,12 +34,13 @@ const Character: FC<Position & { walking: boolean; jumping: boolean }> = (
   ][walkIndex];
 
   return (
-    <PositionableDiv x={x} y={y} width={30} height={60}>
+    <PositionableDiv x={x} y={y} width={PLAYER_WIDTH} height={PLAYER_HEIGHT}>
       <img
         src={jumping ? imageJump : walking ? imageWalk : imageStand}
         alt=""
         width={30}
         height={60}
+        style={facing === "left" ? { transform: "scaleX(-1)" } : {}}
       />
     </PositionableDiv>
   );

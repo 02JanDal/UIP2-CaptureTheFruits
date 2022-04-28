@@ -8,13 +8,35 @@ import usePhysicsController from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
+import useKeyboardController from "../hooks/useKeyboardController";
+import { useAnimationFrame } from "../hooks/useAnimationFrame";
 
-const PlayingField: FC = (props) => {
+const PlayingField: FC = () => {
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
 
-  const { setPlayerVerticalVelocity, playerPos, setPlayerPos, onGround } =
-    usePhysicsController(playingField, () => console.log("fell off"));
+  const {
+    setPlayerVerticalVelocity,
+    playerPos,
+    setPlayerPos,
+    jump,
+    onGround,
+    canGoLeft,
+    canGoRight,
+  } = usePhysicsController(playingField, () => console.log("fell off"));
+
+  const [facing, setFacing] = useState<"left" | "right">("right");
+  const { walk } = useKeyboardController(jump);
+  useAnimationFrame((delta) => {
+    const PIXEL_PER_MS = 1 / 8;
+    if (walk === "left" && canGoLeft) {
+      setPlayerPos((p) => ({ y: p.y, x: p.x - PIXEL_PER_MS * delta }));
+      setFacing(walk);
+    } else if (walk === "right" && canGoRight) {
+      setPlayerPos((p) => ({ y: p.y, x: p.x + PIXEL_PER_MS * delta }));
+      setFacing(walk);
+    }
+  });
 
   const { fruits } = useFruitController(
     playingField.fruits,
@@ -58,7 +80,8 @@ const PlayingField: FC = (props) => {
         x={playerPos.x}
         y={playerPos.y}
         jumping={!onGround}
-        walking={false}
+        walking={walk !== null}
+        facing={facing}
       />
     </div>
   );

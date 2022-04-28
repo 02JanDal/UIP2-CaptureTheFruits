@@ -1,5 +1,6 @@
 import { Position } from "../types";
 import { CSSProperties, FC } from "react";
+import { SHOW_WIREFRAMES } from "../settings";
 
 const PositionableDiv: FC<
   Position & {
@@ -21,6 +22,7 @@ const PositionableDiv: FC<
         left,
         bottom,
         position: "absolute",
+        ...(SHOW_WIREFRAMES ? { border: "1px solid red" } : undefined),
       }}
     >
       {children}
