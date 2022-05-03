@@ -3,6 +3,10 @@ export interface PlayingFieldDefinition {
   playerStart: { x: number; y: number };
   platforms: { x: number; y: number; width: number; height: number }[];
   fruits: { x: number; y: number; points: number }[];
+  trees: {x: number, y: number, width: number, height: number}[];
+  flowers: {x: number, y:number, width:number, height: number}[];
+  ladders: {x: number, y:number, width: number, height:number}[];
+  clouds: {x: number, y:number, width: number, height: number}[];
 }
 
 export const playingField: PlayingFieldDefinition = {
@@ -29,4 +33,8 @@ export const playingField: PlayingFieldDefinition = {
     { x: 400, y: 120, points: 5 },
     { x: 450, y: 120, points: -5 },
   ],
+  trees: [],
+  flowers: [],
+  ladders: [],
+  clouds: [],
 };
