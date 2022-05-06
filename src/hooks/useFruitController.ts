@@ -31,5 +31,6 @@ export default function useFruitController(
 
   return {
     fruits: fruits.filter((_, index) => !touchedFruits.includes(index)),
+    setTouchedFruits,
   };
 }

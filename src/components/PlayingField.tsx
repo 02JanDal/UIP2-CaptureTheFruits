@@ -4,10 +4,13 @@ import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
 import { playingField } from "../playingFieldDefinition";
-import usePhysicsController from "../hooks/usePhysicsController";
+import usePhysicsController, {PLAYER_HEIGHT} from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
+import Flowers from "./Flowers";
+import Ladder from "./Ladder";
+import Tree from "./Tree";
 import useKeyboardController from "../hooks/useKeyboardController";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
@@ -24,7 +27,11 @@ const PlayingField: FC = () => {
     onGround,
     canGoLeft,
     canGoRight,
-  } = usePhysicsController(playingField, () => console.log("fell off"));
+  } = usePhysicsController(playingField, () => {
+        // Bug: this doesnt work somehow
+        setPlayerPos(playingField.playerStart);
+        console.log("fell off");
+    });
 
   const [facing, setFacing] = useState<"left" | "right">("right");
   const { walk } = useKeyboardController(jump);
@@ -39,7 +46,7 @@ const PlayingField: FC = () => {
     }
   });
 
-  const { fruits } = useFruitController(
+    const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
     playerPos,
     (points) => {
@@ -48,9 +55,34 @@ const PlayingField: FC = () => {
       if (currentPoints + points < 0 && points === -5) {
         setLives(currentLives - 1);
       }
+      // Will tidy this up in a new function
+      if (currentLives - 1 <= 0){
+          setPoints(0);
+          setLives(3);
+          setPlayerPos(playingField.playerStart);
+          setTouchedFruits([]);
+      }
       console.log(`Touched fruit worth ${points} points`);
     }
   );
+
+  // Player falling gets reset, works here falling works here!!
+  let pos = { ...playerPos };
+  if (pos.y + PLAYER_HEIGHT < 0) {
+      setPlayerPos(playingField.playerStart);
+      setLives(currentLives - 1);
+      // should be in a new function!
+      if (currentLives - 1 <= 0){
+          setPoints(0);
+          setLives(3);
+          setPlayerPos(playingField.playerStart);
+          setTouchedFruits([]);
+      }
+  }
+
+  let flowers = playingField.flowers;
+  let ladders = playingField.ladders;
+  let trees = playingField.trees;
 
   const scrollOffset = useScrollController({
     fieldWidth: playingField.width,
@@ -79,11 +111,20 @@ const PlayingField: FC = () => {
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
+      {flowers.map((f, i) => (
+          <Flowers key={i} x={f.x} y={f.y} />
+      ))}
+      {ladders.map((f,i) =>(
+          <Ladder key={i} x={f.x} y={f.y} width={f.width} height={f.height}/>
+      ))}
+      {trees.map((f,i) =>(
+          <Tree key={i} x={f.x} y={f.y} />
+      ))}
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
-      <Lives x={1250} y={580} width={50} height={100} lives={currentLives} />
-      <Points x={1180} y={580} width={50} height={100} points={currentPoints} />
+      <Lives x={playingField.lives.x} y={playingField.lives.y} width={playingField.lives.width} height={playingField.lives.height} lives={currentLives} />
+      <Points x={playingField.points.x} y={playingField.points.y} width={playingField.points.width} height={playingField.points.height} points={currentPoints} />
       <Character
         x={playerPos.x}
         y={playerPos.y}
