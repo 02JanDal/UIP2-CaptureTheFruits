@@ -4,7 +4,7 @@ import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
 import { playingField } from "../playingFieldDefinition";
-import usePhysicsController from "../hooks/usePhysicsController";
+import usePhysicsController, {PLAYER_HEIGHT} from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
@@ -20,7 +20,7 @@ const PlayingField: FC = (props) => {
         console.log("fell off");
     });
 
-  const { fruits, setTouchedFruits } = useFruitController(
+    const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
     playerPos,
     (points) => {
@@ -40,7 +40,21 @@ const PlayingField: FC = (props) => {
     }
   );
 
-  return (
+    // Player falling gets reset, works here falling works here!!
+    let pos = { ...playerPos };
+    if (pos.y + PLAYER_HEIGHT < 0) {
+        setPlayerPos(playingField.playerStart);
+        setLives(currentLives - 1);
+        // should be in a new function!
+        if (currentLives - 1 <= 0){
+            setPoints(0);
+            setLives(3);
+            setPlayerPos(playingField.playerStart);
+            setTouchedFruits([]);
+        }
+    }
+
+    return (
     <div
       style={{
         position: "relative",
@@ -63,8 +77,8 @@ const PlayingField: FC = (props) => {
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
-      <Lives x={1250} y={580} width={50} height={100} lives={currentLives} />
-      <Points x={1180} y={580} width={50} height={100} points={currentPoints} />
+      <Lives x={playingField.lives.x} y={playingField.lives.y} width={playingField.lives.width} height={playingField.lives.height} lives={currentLives} />
+      <Points x={playingField.points.x} y={playingField.points.y} width={playingField.points.width} height={playingField.points.height} points={currentPoints} />
       <Character
         x={playerPos.x}
         y={playerPos.y}

@@ -1,6 +1,8 @@
 export interface PlayingFieldDefinition {
   width: number;
   playerStart: { x: number; y: number };
+  points: {x: number, y: number, width: number, height: number};
+  lives: {x: number, y: number, width: number, height: number };
   platforms: { x: number; y: number; width: number; height: number }[];
   fruits: { x: number; y: number; points: number }[];
   trees: {x: number, y: number, width: number, height: number}[];
@@ -12,6 +14,8 @@ export interface PlayingFieldDefinition {
 export const playingField: PlayingFieldDefinition = {
   width: 1500,
   playerStart: { x: 50, y: 500 },
+  points: {x: window.innerWidth - 200, y:window.innerHeight - 120, width: 50, height: 100},
+  lives: {x: window.innerWidth - 120, y: window.innerHeight - 120, width: 50, height: 100},
   platforms: [
     { x: 0, y: 0, width: 500, height: 100 },
     { x: 500, y: 0, width: 500, height: 150 },
