@@ -66,6 +66,9 @@ export const playingField: PlayingFieldDefinition = {
     { x: 850, y: 450 },
     { x: 1250, y: 250 },
   ],
-  ladders: [],
+  ladders: [
+    { x: 250, y: 160, width: 90, height: 170 },
+    { x: 1250, y: 160, width: 90, height: 170 },
+  ],
   clouds: [],
 };

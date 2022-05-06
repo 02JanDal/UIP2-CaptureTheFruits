@@ -9,6 +9,7 @@ import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
 import Flowers from "./Flowers";
+import Ladder from "./Ladder";
 
 const PlayingField: FC = (props) => {
   const [currentPoints, setPoints] = useState(0);
@@ -56,6 +57,7 @@ const PlayingField: FC = (props) => {
     }
 
     let flowers = playingField.flowers;
+    let ladders = playingField.ladders;
 
     return (
     <div
@@ -77,14 +79,17 @@ const PlayingField: FC = (props) => {
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
+        {flowers.map((f, i) => (
+            <Flowers key={i} x={f.x} y={f.y} />
+        ))}
+        {ladders.map((f,i) =>(
+            <Ladder key={i} x={f.x} y={f.y} width={f.width} height={f.height}/>
+        ))}
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
       <Lives x={playingField.lives.x} y={playingField.lives.y} width={playingField.lives.width} height={playingField.lives.height} lives={currentLives} />
       <Points x={playingField.points.x} y={playingField.points.y} width={playingField.points.width} height={playingField.points.height} points={currentPoints} />
-        {flowers.map((f, i) => (
-            <Flowers key={i} x={f.x} y={f.y} />
-        ))}
       <Character
         x={playerPos.x}
         y={playerPos.y}
