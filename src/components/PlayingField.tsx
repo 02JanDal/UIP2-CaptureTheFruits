@@ -10,6 +10,7 @@ import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
 import Flowers from "./Flowers";
 import Ladder from "./Ladder";
+import Tree from "./Tree";
 
 const PlayingField: FC = (props) => {
   const [currentPoints, setPoints] = useState(0);
@@ -58,6 +59,7 @@ const PlayingField: FC = (props) => {
 
     let flowers = playingField.flowers;
     let ladders = playingField.ladders;
+    let trees = playingField.trees;
 
     return (
     <div
@@ -84,6 +86,9 @@ const PlayingField: FC = (props) => {
         ))}
         {ladders.map((f,i) =>(
             <Ladder key={i} x={f.x} y={f.y} width={f.width} height={f.height}/>
+        ))}
+        {trees.map((f,i) =>(
+            <Tree key={i} x={f.x} y={f.y} />
         ))}
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
