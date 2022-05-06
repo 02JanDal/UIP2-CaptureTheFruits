@@ -10,6 +10,7 @@ import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
 import useKeyboardController from "../hooks/useKeyboardController";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
+import useScrollController from "../hooks/useScrollController";
 
 const PlayingField: FC = () => {
   const [currentPoints, setPoints] = useState(0);
@@ -51,12 +52,19 @@ const PlayingField: FC = () => {
     }
   );
 
+  const scrollOffset = useScrollController({
+    fieldWidth: playingField.width,
+    playerPos,
+  });
+
   return (
     <div
       style={{
         position: "relative",
         width: `${playingField.width}px`,
         height: "100%",
+        left: -scrollOffset.x,
+        bottom: -scrollOffset.y,
       }}
       // some placeholder interaction just to test the physics
       onDoubleClick={() => setPlayerVerticalVelocity(300)}

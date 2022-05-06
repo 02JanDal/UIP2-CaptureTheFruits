@@ -117,6 +117,12 @@ export default function usePhysicsController(
       onFellOff();
     }
 
+    if (pos.x < 0) {
+      pos.x = 0;
+    } else if (pos.y + PLAYER_WIDTH > playingField.width) {
+      pos.y = playingField.width - PLAYER_WIDTH;
+    }
+
     setPlayerPos(pos);
   });
 
