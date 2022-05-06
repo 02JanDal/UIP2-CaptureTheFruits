@@ -8,6 +8,7 @@ import usePhysicsController, {PLAYER_HEIGHT} from "../hooks/usePhysicsController
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
+import Flowers from "./Flowers";
 
 const PlayingField: FC = (props) => {
   const [currentPoints, setPoints] = useState(0);
@@ -54,6 +55,8 @@ const PlayingField: FC = (props) => {
         }
     }
 
+    let flowers = playingField.flowers;
+
     return (
     <div
       style={{
@@ -79,6 +82,9 @@ const PlayingField: FC = (props) => {
       ))}
       <Lives x={playingField.lives.x} y={playingField.lives.y} width={playingField.lives.width} height={playingField.lives.height} lives={currentLives} />
       <Points x={playingField.points.x} y={playingField.points.y} width={playingField.points.width} height={playingField.points.height} points={currentPoints} />
+        {flowers.map((f, i) => (
+            <Flowers key={i} x={f.x} y={f.y} />
+        ))}
       <Character
         x={playerPos.x}
         y={playerPos.y}
