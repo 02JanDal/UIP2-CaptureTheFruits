@@ -1,4 +1,10 @@
+@font-face {
+    font-family: StoryTelling;
+    src: local("StoryTelling"), local("StoryTellingRegular"), url(./fonts/StoryTellingRegular-8MZ1n.ttf) format("truetype");
+}
+
 html, body, #root {
+    font-family: StoryTelling, sans-serif;
     width: 100vw;
     height: 100vh;
     margin: 0;
@@ -6,4 +12,13 @@ html, body, #root {
 
 #root {
     overflow: hidden;
+}
+
+.playing-field-info {
+    /* https://caniuse.com/text-stroke */
+    -webkit-text-stroke: 1px black;
+    color: white;
+    font-size: 28px;
+    /* prevents the user from selecting the text */
+    user-select: none;
 }
