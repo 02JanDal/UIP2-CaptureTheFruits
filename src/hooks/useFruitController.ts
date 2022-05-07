@@ -6,6 +6,7 @@ import {
   PLAYER_HEIGHT,
   PLAYER_WIDTH,
 } from "./usePhysicsController";
+import { FRUIT_SIZE } from "../components/Fruit";
 
 export default function useFruitController(
   fruits: PlayingFieldDefinition["fruits"],
@@ -19,7 +20,7 @@ export default function useFruitController(
       if (
         !touchedFruits.includes(index) &&
         intersects(
-          { ...fruit, width: 0, height: 0 },
+          { ...fruit, width: FRUIT_SIZE, height: FRUIT_SIZE },
           { ...player, width: PLAYER_WIDTH, height: PLAYER_HEIGHT }
         )
       ) {
