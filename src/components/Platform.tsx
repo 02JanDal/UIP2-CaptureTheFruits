@@ -3,6 +3,11 @@ import { Position } from "../types";
 import PositionableDiv from "./PositionableDiv";
 import imageGrass from "../images/tile-with-green-long.png";
 
+// we don't want the top of the image to be the top of the platform, since it
+// has some grass sticking up and it looks weird if the player walks on the grass
+// that's sticking up rather than on the "base" of the grass
+const IMG_OFFSET = 7;
+
 const Platform: FC<Position & { width: number; height: number }> = (props) => {
   const { x, y, width, height } = props;
 
@@ -22,10 +27,11 @@ const Platform: FC<Position & { width: number; height: number }> = (props) => {
           width={128}
           height={128}
           style={{
-            height: height,
+            height: height + IMG_OFFSET,
             overflow: "hidden",
             objectFit: "cover",
             objectPosition: "top",
+            marginTop: -IMG_OFFSET,
           }}
         />
       ))}

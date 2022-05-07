@@ -1,1 +1,1 @@
-export const SHOW_WIREFRAMES = true;
+export const SHOW_WIREFRAMES = false;
