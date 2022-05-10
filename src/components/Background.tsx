@@ -6,17 +6,31 @@ import imageBackground from "../images/background.png";
  */
 const Background: FC = () => {
   return (
-    <img
-        src={imageBackground}
-        alt=""
-        style={{
-          height: "100%",
-          width: "100%",
-          overflow: "hidden",
-          objectFit: "cover",
-          objectPosition: "top",
-        }}
-    />
+      <div
+          style={{
+              height: "100%",
+              width: "100%",
+              overflow: "hidden",
+              objectFit: "cover",
+              objectPosition: "top",
+              backgroundImage: `url(${imageBackground})`,
+              backgroundRepeat: "repeat",
+          }}>
+
+      </div>
+    // <img
+    //     src={imageBackground}
+    //     alt=""
+    //     style={{
+    //       height: "100%",
+    //       width: "100%",
+    //       overflow: "hidden",
+    //       objectFit: "cover",
+    //       objectPosition: "top",
+    //         backgroundImage: imageBackground,
+    //         backgroundRepeat: "repeat",
+    //     }}
+    // />
   );
 };
 export default Background;

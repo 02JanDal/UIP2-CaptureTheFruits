@@ -109,7 +109,6 @@ const PlayingField: FC = () => {
         })
       }
     >
-      <Background />
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
@@ -120,7 +119,7 @@ const PlayingField: FC = () => {
         <Ladder key={i} x={f.x} y={f.y} width={f.width} height={f.height} />
       ))}
       {trees.map((f, i) => (
-        <Tree key={i} x={f.x} y={f.y} />
+        <Tree key={i} x={f.x} y={f.y} image={f.image} />
       ))}
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />

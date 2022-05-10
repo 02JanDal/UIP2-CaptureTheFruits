@@ -12,6 +12,8 @@ html, body, #root {
 
 #root {
     overflow: hidden;
+    background-image:url("images/background.png");
+    background-repeat:repeat;
 }
 
 .playing-field-info {
