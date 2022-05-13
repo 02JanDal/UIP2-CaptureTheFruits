@@ -3,8 +3,20 @@ import PlayingField from "./components/PlayingField";
 import { Locale, LocaleContext, messages } from "./i18n";
 import { I18n } from "react-polyglot";
 
+import ReactHowler from 'react-howler'
+
 function App() {
   const [locale, setLocale] = useState<Locale>("en");
+
+
+// Mute all sounds
+/*
+  Howler.mute(false)
+ */
+
+/*
+<PlayingField />
+ */
 
   return (
     /* Contexts are a way to "pass down" properties without having to
@@ -18,7 +30,18 @@ function App() {
      */
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <I18n locale={locale} messages={messages[locale]}>
-        <PlayingField />
+
+
+        <ReactHowler
+            src='/sounds/background.mp3'
+            preload={true}
+            loop={true}
+            html5={true}
+            playing={true}
+            volume={0.3}
+            />
+
+
       </I18n>
     </LocaleContext.Provider>
   );

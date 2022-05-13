@@ -130,6 +130,7 @@ export default function usePhysicsController(
     setPlayerVerticalVelocity: (v: number) =>
       (playerVerticalVelocity.current = v),
     jump: () => {
+
       if (playerVerticalVelocity.current <= 0 && onGround) {
         playerVerticalVelocity.current = JUMP_VELOCITY;
       }

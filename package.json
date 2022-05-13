@@ -13,6 +13,7 @@
     "prettier": "^2.6.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-howler": "^5.2.0",
     "react-polyglot": "^0.7.2",
     "react-scripts": "5.0.0",
     "typescript": "^4.6.3",
@@ -41,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-howler": "^5.2.0"
   }
 }
