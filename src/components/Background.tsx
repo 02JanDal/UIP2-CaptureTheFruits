@@ -1,12 +1,13 @@
 import { FC } from "react";
 import imageBackground from "../images/background.png";
-
+import PlayingField from "./PlayingField";
+import ReactHowler from 'react-howler';
+import { HOWLER_VOLUME } from "../settings";
 
 /**
  * The background for our playing field. A blue sky, maybe some clouds (possibly animated) etc.
  */
 const Background: FC = () => {
-
 
   return (
       <div
@@ -19,6 +20,17 @@ const Background: FC = () => {
               backgroundImage: `url(${imageBackground})`,
               backgroundRepeat: "repeat",
           }}>
+
+		<PlayingField/>
+
+        <ReactHowler
+            src='/sounds/background.mp3'
+            preload={true}
+            loop={true}
+            html5={true}
+            playing={true}
+            volume={0.07}
+            />
 
       </div>
     // <img

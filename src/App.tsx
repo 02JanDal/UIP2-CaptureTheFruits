@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Background from "./components/Background";
 import PlayingField from "./components/PlayingField";
 import { Locale, LocaleContext, messages } from "./i18n";
 import { I18n } from "react-polyglot";
@@ -8,14 +9,16 @@ import ReactHowler from 'react-howler'
 function App() {
   const [locale, setLocale] = useState<Locale>("en");
 
-
-// Mute all sounds
 /*
-  Howler.mute(false)
- */
 
-/*
-<PlayingField />
+<ReactHowler
+            src='/sounds/background.mp3'
+            preload={true}
+            loop={true}
+            html5={true}
+            playing={true}
+            volume={0.3}
+            />
  */
 
   return (
@@ -31,16 +34,7 @@ function App() {
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <I18n locale={locale} messages={messages[locale]}>
 
-
-        <ReactHowler
-            src='/sounds/background.mp3'
-            preload={true}
-            loop={true}
-            html5={true}
-            playing={true}
-            volume={0.3}
-            />
-
+           <Background />
 
       </I18n>
     </LocaleContext.Provider>

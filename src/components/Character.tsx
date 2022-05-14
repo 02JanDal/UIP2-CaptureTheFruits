@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { Position } from "../types";
 import PositionableDiv from "./PositionableDiv";
 import imageStand from "../images/char-stand.png";
@@ -13,11 +13,20 @@ import imageWalk7 from "../images/char-walk-7.png";
 import imageWalk8 from "../images/char-walk-8.png";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import { PLAYER_HEIGHT, PLAYER_WIDTH } from "../hooks/usePhysicsController";
+import { HOWLER_VOLUME } from "../settings";
+import ReactHowler from 'react-howler'
 
 const Character: FC<
   Position & { walking: boolean; jumping: boolean; facing: "left" | "right" }
 > = (props) => {
   const { x, y, walking, jumping, facing } = props;
+
+    const [jumpingSound, setJumpingSound] = useState(false);
+    useEffect(() => {
+        if(jumping ){
+            setJumpingSound(true);
+        }
+    }, [jumping]);
 
   const [walkTime, setWalkTime] = useState(0);
   useAnimationFrame((delta) => setWalkTime(walkTime + delta));
@@ -42,6 +51,28 @@ const Character: FC<
         height={60}
         style={facing === "left" ? { transform: "scaleX(-1)" } : {}}
       />
+
+      <ReactHowler
+          src='/sounds/jump400.mp3'
+          preload={true}
+          html5={true}
+          loop={false}
+          onEnd={()=>{
+            setJumpingSound(false);
+          }}
+          playing={ jumpingSound }
+          volume={HOWLER_VOLUME}
+          />
+
+      <ReactHowler
+            src='/sounds/walk.wav'
+            preload={true}
+            html5={true}
+            loop={true}
+            playing={ walking && !jumping }
+            volume={HOWLER_VOLUME}
+            />
+
     </PositionableDiv>
   );
 };
