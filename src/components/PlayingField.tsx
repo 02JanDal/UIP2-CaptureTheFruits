@@ -16,6 +16,7 @@ import Tree from "./Tree";
 import useKeyboardController from "../hooks/useKeyboardController";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
+import useGameController from "../hooks/useGameController";
 
 const PlayingField: FC = () => {
   const [currentPoints, setPoints] = useState(0);
@@ -48,7 +49,9 @@ const PlayingField: FC = () => {
     }
   });
 
-  const { fruits, setTouchedFruits } = useFruitController(
+    const { resetGame } = useGameController(setPoints, setLives, setPlayerPos);
+
+    const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
     playerPos,
     (points) => {
@@ -58,11 +61,13 @@ const PlayingField: FC = () => {
         setLives(currentLives - 1);
       }
       // Will tidy this up in a new function
+        // This is not working somehow
       if (currentLives - 1 <= 0) {
-        setPoints(0);
-        setLives(3);
-        setPlayerPos(playingField.playerStart);
-        setTouchedFruits([]);
+        resetGame(setTouchedFruits);
+      //   setPoints(0);
+      //   setLives(3);
+      //   setPlayerPos(playingField.playerStart);
+      //   setTouchedFruits([]);
       }
       console.log(`Touched fruit worth ${points} points`);
     }
@@ -75,10 +80,11 @@ const PlayingField: FC = () => {
     setLives(currentLives - 1);
     // should be in a new function!
     if (currentLives - 1 <= 0) {
-      setPoints(0);
-      setLives(3);
-      setPlayerPos(playingField.playerStart);
-      setTouchedFruits([]);
+      resetGame(setTouchedFruits);
+      // setPoints(0);
+      // setLives(3);
+      // setPlayerPos(playingField.playerStart);
+      // setTouchedFruits([]);
     }
   }
 
