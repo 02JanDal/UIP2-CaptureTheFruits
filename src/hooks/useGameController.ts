@@ -7,8 +7,8 @@ export default function useGameController(
 ) {
     const resetGame = (setTouchedFruits: (p: number[])=> void) =>{
         // I dont know why it's twisted??
-        setLives(0);
-        setPoints(3);
+        setLives(3);
+        setPoints(0);
         setPlayerPos(playingField.playerStart);
         setTouchedFruits([]);
     };
