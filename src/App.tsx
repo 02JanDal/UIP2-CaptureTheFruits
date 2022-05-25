@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PlayingField from "./components/PlayingField";
 import { Locale, LocaleContext, messages } from "./i18n";
 import { I18n } from "react-polyglot";
+import Home from "./components/Home";
+import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
 function App() {
   const [locale, setLocale] = useState<Locale>("en");
@@ -18,7 +20,10 @@ function App() {
      */
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <I18n locale={locale} messages={messages[locale]}>
-        <PlayingField />
+          <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/play" element={<PlayingField/>}/>
+          </Routes>
       </I18n>
     </LocaleContext.Provider>
   );

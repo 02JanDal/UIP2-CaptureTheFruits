@@ -1,4 +1,5 @@
 import { FC } from "react";
+import {Link} from "react-router-dom";
 
 /**
  * The background for our playing field. A blue sky, maybe some clouds (possibly animated) etc.
@@ -26,12 +27,16 @@ const Home: FC = () => {
                 style={{
                 textAlign: "center",
             }}>
-                <button>
-                    Play now
-                </button>
-                <button>
-                    Tutorial
-                </button>
+                <Link to="/play">
+                    <button>
+                        Play now
+                    </button>
+                </Link>
+                <Link to="/play">
+                    <button>
+                        Tutorial
+                    </button>
+                </Link>
             </div>
         </div>
 
