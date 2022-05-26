@@ -24,6 +24,16 @@ export const messages: Record<Locale, Messages> = {
       youFinished:
         "You finished the game with %{points} points and %{lives} lives left",
       backToMenu: "Back to main menu",
+      enterNameForLeaderboard: "Enter your name to be added to the leaderboard",
+      save: "Save",
+    },
+    leaderboard: {
+      title: "Leaderboard",
+      name: "Name",
+      field: "Level",
+      points: "Points",
+      lives: "Lives left",
+      date: "Date",
     },
   },
   sv: {
@@ -41,6 +51,17 @@ export const messages: Record<Locale, Messages> = {
       youFinished:
         "Du klarade spelet med %{points} poäng och %{lives} liv kvar",
       backToMenu: "Tillbaka till huvudmenyn",
+      enterNameForLeaderboard:
+        "Ange ditt namn för att läggas till på topplistan",
+      save: "Spara",
+    },
+    leaderboard: {
+      title: "Topplistan",
+      name: "Namn",
+      field: "Värld",
+      points: "Poäng",
+      lives: "Liv kvar",
+      date: "Datum",
     },
   },
 };

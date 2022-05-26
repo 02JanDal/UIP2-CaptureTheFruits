@@ -5,13 +5,14 @@ import playingFields from "../data/playingFields";
 
 export const PlayPage: FC = () => {
   const navigate = useNavigate();
+
   const { id } = useParams();
   if (!id) {
     return null;
   }
 
   const onFinished = (lives: number, points: number) => {
-    navigate("/after-game", { state: { id, lives, points } });
+    navigate("/after-game", { state: { id: parseInt(id), lives, points } });
   };
 
   return (

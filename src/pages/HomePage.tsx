@@ -37,6 +37,9 @@ const HomePage: FC = () => {
         <Link to="/tutorial">
           <button>{translate("menu.tutorial")}</button>
         </Link>
+        <Link to="/leaderboard">
+          <button>{translate("leaderboard.title")}</button>
+        </Link>
       </div>
     </div>
   );
