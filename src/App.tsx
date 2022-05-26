@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import PlayingField from "./components/PlayingField";
 import { Locale, LocaleContext, messages } from "./i18n";
 import { I18n } from "react-polyglot";
-import Home from "./components/Home";
-import { BrowserRouter, Routes, Route, } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import { Route, Routes } from "react-router-dom";
+import playingFields from "./data/playingFields";
+import { PlayPage } from "./pages/PlayPage";
+import ChoosePage from "./pages/ChoosePage";
 
-function App() {
+const App: FC = () => {
   const [locale, setLocale] = useState<Locale>("en");
 
   return (
@@ -20,13 +23,18 @@ function App() {
      */
     <LocaleContext.Provider value={{ locale, setLocale }}>
       <I18n locale={locale} messages={messages[locale]}>
-          <Routes>
-              <Route path="/" element={<Home/>}/>
-              <Route path="/play" element={<PlayingField/>}/>
-          </Routes>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/play" element={<ChoosePage />} />
+          <Route path="/play/:id" element={<PlayPage />} />
+          <Route
+            path="/tutorial"
+            element={<PlayingField field={playingFields[0]} showTutorial />}
+          />
+        </Routes>
       </I18n>
     </LocaleContext.Provider>
   );
-}
+};
 
 export default App;

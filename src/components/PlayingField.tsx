@@ -3,7 +3,6 @@ import Background from "./Background";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
-import { playingField } from "../playingFieldDefinition";
 import usePhysicsController, {
   PLAYER_HEIGHT,
 } from "../hooks/usePhysicsController";
@@ -22,8 +21,14 @@ import TutorialTwo from "./TutorialTwo";
 import TutorialThree from "./TutorialThree";
 import TutorialFour from "./TutorialFour";
 import TutorialFive from "./TutorialFive";
+import { PlayingFieldDefinition } from "../playingFieldDefinition";
 
-const PlayingField: FC = () => {
+const PlayingField: FC<{
+  field: PlayingFieldDefinition;
+  showTutorial?: boolean;
+}> = (props) => {
+  const { field, showTutorial } = props;
+
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
 
@@ -35,8 +40,8 @@ const PlayingField: FC = () => {
     onGround,
     canGoLeft,
     canGoRight,
-  } = usePhysicsController(playingField, () => {
-    setPlayerPos(playingField.playerStart);
+  } = usePhysicsController(field, () => {
+    setPlayerPos(field.playerStart);
     console.log("fell off");
   });
 
@@ -53,10 +58,15 @@ const PlayingField: FC = () => {
     }
   });
 
-    const { resetGame } = useGameController(setLives, setPoints, setPlayerPos);
+  const { resetGame } = useGameController(
+    field,
+    setLives,
+    setPoints,
+    setPlayerPos
+  );
 
-    const { fruits, setTouchedFruits } = useFruitController(
-    playingField.fruits,
+  const { fruits, setTouchedFruits } = useFruitController(
+    field.fruits,
     playerPos,
     (points) => {
       setPoints(currentPoints + points);
@@ -74,7 +84,7 @@ const PlayingField: FC = () => {
   // Player falling gets reset, works here falling works here!!
   let pos = { ...playerPos };
   if (pos.y + PLAYER_HEIGHT < 0) {
-    setPlayerPos(playingField.playerStart);
+    setPlayerPos(field.playerStart);
     setLives(currentLives - 1);
     // should be in a new function!
     if (currentLives - 1 <= 0) {
@@ -86,12 +96,12 @@ const PlayingField: FC = () => {
     }
   }
 
-  let flowers = playingField.flowers;
-  let ladders = playingField.ladders;
-  let trees = playingField.trees;
+  let flowers = field.flowers;
+  let ladders = field.ladders;
+  let trees = field.trees;
 
   const scrollOffset = useScrollController({
-    fieldWidth: playingField.width,
+    fieldWidth: field.width,
     playerPos,
   });
 
@@ -99,7 +109,7 @@ const PlayingField: FC = () => {
     <div
       style={{
         position: "relative",
-        width: `${playingField.width}px`,
+        width: `${field.width}px`,
         height: "100%",
         left: -scrollOffset.x,
         bottom: -scrollOffset.y,
@@ -113,7 +123,7 @@ const PlayingField: FC = () => {
         })
       }
     >
-      {playingField.platforms.map((p, i) => (
+      {field.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
       {flowers.map((f, i) => (

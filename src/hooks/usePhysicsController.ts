@@ -101,8 +101,6 @@ export default function usePhysicsController(
         }
       }
     }
-    setCanGoLeft(canLeft);
-    setCanGoRight(canRight);
 
     if (onGround) {
       playerVerticalVelocity.current = 0;
@@ -111,18 +109,21 @@ export default function usePhysicsController(
       playerVerticalVelocity.current += (-GRAVITY_ACCELERATION * delta) / 1000;
     }
 
-    setOnGround(onGround);
-
     if (pos.y + PLAYER_HEIGHT < 0) {
       onFellOff();
     }
 
     if (pos.x < 0) {
       pos.x = 0;
-    } else if (pos.y + PLAYER_WIDTH > playingField.width) {
-      pos.y = playingField.width - PLAYER_WIDTH;
+      canLeft = false;
+    } else if (pos.x + PLAYER_WIDTH > playingField.width) {
+      pos.x = playingField.width - PLAYER_WIDTH;
+      canRight = false;
     }
 
+    setOnGround(onGround);
+    setCanGoLeft(canLeft);
+    setCanGoRight(canRight);
     setPlayerPos(pos);
   });
 
