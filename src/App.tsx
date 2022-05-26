@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import playingFields from "./data/playingFields";
 import { PlayPage } from "./pages/PlayPage";
 import ChoosePage from "./pages/ChoosePage";
+import { AfterGamePage } from "./pages/AfterGamePage";
 
 const App: FC = () => {
   const [locale, setLocale] = useState<Locale>("en");
@@ -29,8 +30,15 @@ const App: FC = () => {
           <Route path="/play/:id" element={<PlayPage />} />
           <Route
             path="/tutorial"
-            element={<PlayingField field={playingFields[0]} showTutorial />}
+            element={
+              <PlayingField
+                field={playingFields[0]}
+                showTutorial
+                onFinished={() => {}}
+              />
+            }
           />
+          <Route path="/after-game" element={<AfterGamePage />} />
         </Routes>
       </I18n>
     </LocaleContext.Provider>

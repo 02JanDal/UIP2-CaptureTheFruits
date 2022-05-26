@@ -20,6 +20,11 @@ export const messages: Record<Locale, Messages> = {
       tutorial: "Tutorial",
       play: "Play level %{index}",
     },
+    afterGame: {
+      youFinished:
+        "You finished the game with %{points} points and %{lives} lives left",
+      backToMenu: "Back to main menu",
+    },
   },
   sv: {
     title: "Samla Frukterna",
@@ -31,6 +36,11 @@ export const messages: Record<Locale, Messages> = {
       playNow: "Spela nu",
       tutorial: "Guide",
       play: "Värld %{index}",
+    },
+    afterGame: {
+      youFinished:
+        "Du klarade spelet med %{points} poäng och %{lives} liv kvar",
+      backToMenu: "Tillbaka till huvudmenyn",
     },
   },
 };

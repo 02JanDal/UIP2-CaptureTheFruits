@@ -2,6 +2,7 @@ import { PlayingFieldDefinition } from "../playingFieldDefinition";
 import { Position } from "../types";
 import { useRef, useState } from "react";
 import { useAnimationFrame } from "./useAnimationFrame";
+import { DOOR_SIZE } from "../components/ExitDoor";
 
 export const PLAYER_WIDTH = 30;
 export const PLAYER_HEIGHT = 60;
@@ -43,6 +44,7 @@ export default function usePhysicsController(
   const [onGround, setOnGround] = useState(false);
   const [canGoLeft, setCanGoLeft] = useState(true);
   const [canGoRight, setCanGoRight] = useState(true);
+  const [atExit, setAtExit] = useState(false);
   const playerVerticalVelocity = useRef(0);
 
   useAnimationFrame((delta) => {
@@ -51,17 +53,17 @@ export default function usePhysicsController(
     // update player y position based on velocity
     pos.y += (playerVerticalVelocity.current * delta) / 1000;
 
+    const playerRect = {
+      ...pos,
+      width: PLAYER_WIDTH,
+      height: PLAYER_HEIGHT,
+    };
+
     let onGround = false;
     let canLeft = true;
     let canRight = true;
     for (const platform of playingField.platforms) {
-      if (
-        intersects(platform, {
-          ...pos,
-          width: PLAYER_WIDTH,
-          height: PLAYER_HEIGHT,
-        })
-      ) {
+      if (intersects(platform, playerRect)) {
         /* We're interested in which side of the platform the player is the "least"
          * amount inside, because that's the direction in which we will push them.
          */
@@ -121,9 +123,15 @@ export default function usePhysicsController(
       canRight = false;
     }
 
+    const atExit = intersects(
+      { ...playingField.exit, width: DOOR_SIZE, height: DOOR_SIZE },
+      playerRect
+    );
+
     setOnGround(onGround);
     setCanGoLeft(canLeft);
     setCanGoRight(canRight);
+    setAtExit(atExit);
     setPlayerPos(pos);
   });
 
@@ -140,5 +148,6 @@ export default function usePhysicsController(
     onGround,
     canGoLeft,
     canGoRight,
+    atExit,
   };
 }

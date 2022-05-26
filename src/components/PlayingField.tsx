@@ -22,12 +22,14 @@ import TutorialThree from "./TutorialThree";
 import TutorialFour from "./TutorialFour";
 import TutorialFive from "./TutorialFive";
 import { PlayingFieldDefinition } from "../playingFieldDefinition";
+import ExitDoor from "./ExitDoor";
 
 const PlayingField: FC<{
   field: PlayingFieldDefinition;
   showTutorial?: boolean;
+  onFinished: (lives: number, points: number) => void;
 }> = (props) => {
-  const { field, showTutorial } = props;
+  const { field, showTutorial, onFinished } = props;
 
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
@@ -40,13 +42,25 @@ const PlayingField: FC<{
     onGround,
     canGoLeft,
     canGoRight,
+    atExit,
   } = usePhysicsController(field, () => {
     setPlayerPos(field.playerStart);
     console.log("fell off");
   });
 
   const [facing, setFacing] = useState<"left" | "right">("right");
-  const { walk } = useKeyboardController(jump);
+  const { walk } = useKeyboardController(jump, () => {
+    if (atExit) {
+      console.log(
+        "Finished game with",
+        currentPoints,
+        "points and",
+        currentLives,
+        "lives"
+      );
+      onFinished(currentLives, currentPoints);
+    }
+  });
   useAnimationFrame((delta) => {
     const PIXEL_PER_MS = 1 / 8;
     if (walk === "left" && canGoLeft) {
@@ -96,9 +110,7 @@ const PlayingField: FC<{
     }
   }
 
-  let flowers = field.flowers;
-  let ladders = field.ladders;
-  let trees = field.trees;
+  const { flowers, ladders, trees, platforms } = field;
 
   const scrollOffset = useScrollController({
     fieldWidth: field.width,
@@ -123,7 +135,7 @@ const PlayingField: FC<{
         })
       }
     >
-      {field.platforms.map((p, i) => (
+      {platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
       {flowers.map((f, i) => (
@@ -138,11 +150,15 @@ const PlayingField: FC<{
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
+      <ExitDoor x={field.exit.x} y={field.exit.y} />
+      {}
       <Character
         x={playerPos.x}
         y={playerPos.y}
         jumping={!onGround}
-        walking={walk !== null}
+        walking={
+          (walk === "left" && canGoLeft) || (walk === "right" && canGoRight)
+        }
         facing={facing}
       />
       <div

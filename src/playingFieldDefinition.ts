@@ -1,6 +1,7 @@
 export interface PlayingFieldDefinition {
   width: number;
   playerStart: { x: number; y: number };
+  exit: { x: number; y: number };
   platforms: { x: number; y: number; width: number; height: number }[];
   fruits: { x: number; y: number; points: number }[];
   trees: { x: number; y: number; image: number }[];
