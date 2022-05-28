@@ -12,7 +12,7 @@ export default function useKeyboardController(onJump: () => void) {
     } else if (code === "ArrowRight") {
       setWalk("right");
       setRightDown(true);
-    } else if (code === "Space") {
+    } else if (code === "Space" || code === "ArrowUp") {
       onJump();
     }
   };

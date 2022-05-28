@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Background from "./Background";
 import Platform from "./Platform";
 import Character from "./Character";
@@ -17,36 +17,35 @@ import SoundMuteUn from "./SoundMuteUn";
 import useKeyboardController from "../hooks/useKeyboardController";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
-import ReactHowler from 'react-howler'
+import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
-
 
 const PlayingField: FC = () => {
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
 
-  const [gameOverSound, setGameOverSound] = useState(false);
-  const [pointDownSound, setPointDownSound] = useState(false);
-  const [pointUpSound, setPointUpSound] = useState(false);
+  const gameOverSound = useRef(false);
+  const pointDownSound = useRef(false);
+  const pointUpSound = useRef(false);
 
-	// Observing currentLives
-   useEffect(() => {
-    if( currentLives <= 0  ){
-        setGameOverSound(true);
+  // Observing currentLives
+  useEffect(() => {
+    if (currentLives <= 0) {
+      gameOverSound.current = true;
     }
   }, [currentLives]);
 
-	// Game End
+  // Game End
   useEffect(() => {
-      if(gameOverSound)
-        setTimeout(() => {
-          setPoints(0);
-          setLives(3);
-          setPlayerPos(playingField.playerStart);
-          setTouchedFruits([]);
-          setGameOverSound(false);
-        }, 1000); // making delay before ReSet
-    }, [gameOverSound]);
+    if (gameOverSound)
+      setTimeout(() => {
+        setPoints(0);
+        setLives(3);
+        setPlayerPos(playingField.playerStart);
+        setTouchedFruits([]);
+        gameOverSound.current = false;
+      }, 1000); // making delay before ReSet
+  }, [gameOverSound]);
 
   const {
     setPlayerVerticalVelocity,
@@ -75,6 +74,8 @@ const PlayingField: FC = () => {
     }
   });
 
+
+
   const { fruits, setTouchedFruits } = useFruitController(
     playingField.fruits,
     playerPos,
@@ -84,7 +85,7 @@ const PlayingField: FC = () => {
       /*
       Playing sound on point Up / Down
       */
-      points>0 ? setPointUpSound(true)  :  setPointDownSound(true) ;
+      pointUpSound.current = points > 0 ? true : false
 
       if (currentPoints + points < 0 && points === -5) {
         setLives(currentLives - 1);
@@ -148,8 +149,7 @@ const PlayingField: FC = () => {
         jumping={!onGround}
         walking={walk !== null}
         facing={facing}
-      >
-      </Character>
+      ></Character>
       <div
         style={{
           // by using position fixed this div will be placed at the same place on
@@ -163,46 +163,55 @@ const PlayingField: FC = () => {
         }}
         className="playing-field-info"
       >
-        <SoundMuteUn image={0}/>
+        <SoundMuteUn image={0} />
         <Lives lives={currentLives} />
         <Points points={currentPoints} />
       </div>
 
+
       <ReactHowler
-        src='/sounds/gameOver.wav'
+        src="/sounds/background.mp3"
+        preload={true}
+        loop={true}
+        html5={true}
+        playing={true}
+        volume={0.07}
+      />
+
+      <ReactHowler
+        src="/sounds/gameOver.wav"
         preload={true}
         html5={true}
         loop={false}
-        playing={ gameOverSound }
-        volume={ HOWLER_VOLUME }
-        />
+        playing={gameOverSound.current}
+        volume={HOWLER_VOLUME}
+      />
 
-    <ReactHowler
-	    src='/sounds/pointDown.wav'
-	    preload={true}
-	    html5={true}
-	    loop={false}
-	    playing={ pointDownSound }
-	    volume={HOWLER_VOLUME }
-	    onEnd={ ()=> {
-	        setPointDownSound(false);
-	    }}
-	    />
+      <ReactHowler
+        src="/sounds/pointDown.wav"
+        preload={true}
+        html5={true}
+        loop={false}
+        playing={pointDownSound.current}
+        volume={HOWLER_VOLUME}
+        onEnd={() => {
+          pointDownSound.current = false;
+        }}
+      />
 
-	<ReactHowler
-	    src='/sounds/pointUp.wav'
-	    preload={true}
-	    html5={true}
-	    loop={false}
-	    playing={ pointUpSound }
-	    volume={ HOWLER_VOLUME }
-	    onEnd={()=>{
-	        setPointUpSound(false);
-	    }}
-	    />
+      <ReactHowler
+        src="/sounds/pointUp.wav"
+        preload={true}
+        html5={true}
+        loop={false}
+        playing={pointUpSound.current}
+        volume={HOWLER_VOLUME}
+        onEnd={() => {
+          pointUpSound.current = false;
+        }}
+      />
 
     </div>
-
   );
 };
 export default PlayingField;
