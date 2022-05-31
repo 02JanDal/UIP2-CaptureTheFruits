@@ -1,12 +1,9 @@
-import { FC, useState, useEffect, useRef } from "react";
-import Background from "./Background";
+import { FC, useEffect, useRef, useState } from "react";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
 import { playingField } from "../playingFieldDefinition";
-import usePhysicsController, {
-  PLAYER_HEIGHT,
-} from "../hooks/usePhysicsController";
+import usePhysicsController, { PLAYER_HEIGHT } from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
@@ -19,6 +16,10 @@ import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
 import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
+import { Joystick, JoystickShape } from "react-joystick-component";
+import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
+import jQuery from "jquery";
+import JoyStickModule from "./JoyStickModule";
 
 const PlayingField: FC = () => {
   const [currentPoints, setPoints] = useState(0);
@@ -120,13 +121,13 @@ const PlayingField: FC = () => {
         bottom: -scrollOffset.y,
       }}
       // some placeholder interaction just to test the physics
-      onDoubleClick={() => setPlayerVerticalVelocity(300)}
+      /*onDoubleClick={() => setPlayerVerticalVelocity(300)}
       onClick={(e) =>
         setPlayerPos({
           x: e.clientX,
           y: (e.target as HTMLDivElement).clientHeight - e.clientY,
         })
-      }
+      }*/
     >
       {playingField.platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
@@ -168,6 +169,7 @@ const PlayingField: FC = () => {
         <Points points={currentPoints} />
       </div>
 
+      <JoyStickModule/>
 
       <ReactHowler
         src="/sounds/background.mp3"
