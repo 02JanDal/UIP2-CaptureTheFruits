@@ -1,9 +1,11 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslate } from "react-polyglot";
+import { LocaleContext } from "../i18n";
 
 const HomePage: FC = () => {
   const translate = useTranslate();
+  const { setLocale } = useContext(LocaleContext)!;
 
   return (
     <div
@@ -40,6 +42,12 @@ const HomePage: FC = () => {
         <Link to="/leaderboard">
           <button>{translate("leaderboard.title")}</button>
         </Link>
+        <button onClick={() => setLocale("en")}>
+          {translate("menu.setEnglish")}
+        </button>
+        <button onClick={() => setLocale("sv")}>
+          {translate("menu.setSwedish")}
+        </button>
       </div>
     </div>
   );

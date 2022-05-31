@@ -19,6 +19,8 @@ export const messages: Record<Locale, Messages> = {
       playNow: "Play now",
       tutorial: "Tutorial",
       play: "Play level %{index}",
+      setEnglish: "English",
+      setSwedish: "Swedish",
     },
     afterGame: {
       youFinished:
@@ -46,6 +48,8 @@ export const messages: Record<Locale, Messages> = {
       playNow: "Spela nu",
       tutorial: "Guide",
       play: "Värld %{index}",
+      setEnglish: "Engelska",
+      setSwedish: "Svenska",
     },
     afterGame: {
       youFinished:
