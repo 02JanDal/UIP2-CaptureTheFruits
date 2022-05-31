@@ -16,12 +16,15 @@ const SoundMuteUn: FC<{ image: number }> = (props) => {
 
   return (
     <div>
+
       <img
         onClick={() => mute.current = !mute.current }
         src={mute.current ? unMuteImage : muteImage}
-        width="40"
-        height="40"
+        width="24"
+        height="24"
       />
+
+
 
     </div>
   );

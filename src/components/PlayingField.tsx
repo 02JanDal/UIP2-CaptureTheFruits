@@ -16,9 +16,6 @@ import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
 import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
-import { Joystick, JoystickShape } from "react-joystick-component";
-import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
-import jQuery from "jquery";
 import JoyStickModule from "./JoyStickModule";
 
 const PlayingField: FC = () => {

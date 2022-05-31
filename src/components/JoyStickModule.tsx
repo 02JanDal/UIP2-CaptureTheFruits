@@ -1,23 +1,20 @@
-import { FC,  useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Joystick, JoystickShape } from "react-joystick-component";
 import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
-import { playingField } from "../playingFieldDefinition";
 
 const JoyStickModule: FC = (props) => {
 
   const joyStickMoveMargin = useRef(8);
 
-
-  const jumpPressed = useRef(false);
+  const [jumpPressed, setJumpPressed] = useState(false);
   const rightPressed = useRef(false);
   const leftPressed = useRef(false);
-
   /*
   * Testing
   * */
   useEffect(() => {
-    console.log("jumpPressed " + jumpPressed.current)
-  }, [jumpPressed.current]);
+    console.log("jumpPressed " + jumpPressed)
+  }, [jumpPressed]);
   useEffect(() => {
     console.log("rightPressed " + rightPressed.current)
   }, [rightPressed.current]);
@@ -42,23 +39,6 @@ const JoyStickModule: FC = (props) => {
         key: "ArrowRight", keyCode: 39, code: "ArrowRight", which: 39,
         shiftKey: false, ctrlKey: false, metaKey: false
       }));
-    }
-  }
-
-  const doJump = () => {
-    if(!jumpPressed.current){
-      jumpPressed.current = true;
-      window.dispatchEvent(new KeyboardEvent('keydown', {
-        key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
-        shiftKey: false, ctrlKey: false, metaKey: false
-      }));
-      setTimeout(() => {
-        jumpPressed.current = false;
-        window.dispatchEvent(new KeyboardEvent('keyup', {
-          key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
-          shiftKey: false, ctrlKey: false, metaKey: false
-        }));
-      }, 1000); // making delay to keyup as after jump complete
     }
   }
 
@@ -100,13 +80,27 @@ const JoyStickModule: FC = (props) => {
       /*
       * jump move
       * */
-      if(event.y !== null && event.y >= joyStickMoveMargin.current)
-        doJump();
+      if(!jumpPressed && event.y !== null && event.y >= joyStickMoveMargin.current) {
+          setJumpPressed(true);
+          window.dispatchEvent(new KeyboardEvent('keydown', {
+            key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
+            shiftKey: false, ctrlKey: false, metaKey: false
+          }));
+          setTimeout(() => {
+            setJumpPressed(false);
+            window.dispatchEvent(new KeyboardEvent('keyup', {
+              key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
+              shiftKey: false, ctrlKey: false, metaKey: false
+            }));
+          }, 1000); // making delay to keyup as after jump complete
+        }
 
     } else if(event.type == "start"){
-      jumpPressed.current = false;
+
+      /*setJumpPressed(false);
       rightPressed.current = false;
-      leftPressed.current = false;
+      leftPressed.current = false;*/
+
     } else if(event.type == "stop"){
       keyUpLeft();
       keyUpRight();
@@ -132,7 +126,10 @@ const JoyStickModule: FC = (props) => {
       <Joystick size={80}
                 minDistance={50}
                 baseShape={JoystickShape.Square}
+                stickShape={JoystickShape.Square}
                 throttle={250}
+                baseColor={"#ca9b33"}
+                stickColor={"#23af16"}
                 move={changeJoyStick}
                 start={changeJoyStick}
                 stop={changeJoyStick}
