@@ -3,6 +3,11 @@
     src: local("StoryTelling"), local("StoryTellingRegular"), url(./fonts/StoryTellingRegular-8MZ1n.ttf) format("truetype");
 }
 
+@font-face {
+    font-family: Bangers;
+    src: local("Bangers"), local("BangersRegular"), url(./fonts/Bangers-Regular.ttf) format("truetype");
+}
+
 html, body, #root {
     font-family: StoryTelling, sans-serif;
     width: 100vw;
@@ -291,6 +296,18 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     margin-right:10px;
 }
 
+.next-buttons.home-buttons{
+    font-size:20px;
+    padding: 15px;
+    margin:10px;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.25);
+    color: black;
+    background: #E5D4CB !important;
+    border: 5px solid #E5D4CB !important;
+    font-weight:bold;
+
+}
+
 .bubble-one{
     left: 40px;
     bottom: 160px;
@@ -318,26 +335,6 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     bottom: 160px;
 }
 
-@media(max-width:425px){
-    .bubble-two{
-        left:40px;
-        bottom: 160px;
-    }
-    .bubble-three{
-        left: 40px;
-        bottom: 160px;
-        position: absolute !important;
-        top: auto;
-    }
-    .bubble-four{
-        left: 40px;
-        bottom: 160px;
-    }
-    .bubble-five{
-        left: 40px;
-        bottom: 160px;
-    }
-}
 .help{
     height: 50px;
     width: 50px;
@@ -377,4 +374,74 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
 }
 .close:after {
     transform: rotate(-45deg);
+}
+
+.home-page-picture{
+    background-image:url("images/background-3.png");
+    width:100%;
+    height:100%;
+    background-size:cover;
+}
+
+.home-page-layover{
+    background: rgba(45, 45, 45, 0.3);
+    width:100%;
+    height:100%;
+}
+
+.home-page-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    top: 40%;
+    position: relative;
+}
+
+.home-page-title{
+    font-family:'Bangers';
+    font-size: 100px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    -webkit-text-stroke: 5px black;
+    color: white;
+}
+
+.home-page-buttons{
+    display:flex;
+    flex-direction: row;
+}
+
+@media(max-width:425px){
+    .bubble-two{
+        left:40px;
+        bottom: 160px;
+    }
+    .bubble-three{
+        left: 40px;
+        bottom: 160px;
+        position: absolute !important;
+        top: auto;
+    }
+    .bubble-four{
+        left: 40px;
+        bottom: 160px;
+    }
+    .bubble-five{
+        left: 40px;
+        bottom: 160px;
+    }
+    .home-page-container{
+        top:20%;
+    }
+    .home-page-title{
+        font-size:70px;
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+    .home-page-buttons{
+        flex-direction:column;
+    }
 }

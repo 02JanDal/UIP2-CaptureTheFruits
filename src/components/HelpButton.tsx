@@ -9,7 +9,11 @@ const HelpButton: FC<{
     const {showTutorial} = props
 
     return (
-        <button className="help" onClick={showTutorial}>?</button>
+        <div style={{position:"fixed",
+        top:0,
+        left:0}}>
+            <button className="help" onClick={showTutorial}>?</button>
+        </div>
     );
 };
 export default HelpButton;

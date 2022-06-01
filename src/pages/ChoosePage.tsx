@@ -7,38 +7,33 @@ const HomePage: FC = () => {
   const translate = useTranslate();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        top: "40%",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 100,
-          height: "100%",
-          width: "100%",
-          textAlign: "center",
-        }}
-      >
-        {translate("title")}
+      <div className="home-page-picture">
+          <div className="home-page-layover">
+              <div
+                  className="home-page-container"
+              >
+                  <div
+                      className="home-page-title"
+                  >
+                      {translate("title")}
+                  </div>
+                  <div
+                      style={{
+                          textAlign: "center",
+                      }}
+                  >
+                      <div className="home-page-buttons">
+                          {playingFields.map((_, index) => (
+                              <Link to={`/play/${index}`} key={index}>
+                                  <button className="next-buttons home-buttons">{translate("menu.play", { index: index + 1 })}</button>
+                              </Link>
+                          ))}
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        {playingFields.map((_, index) => (
-          <Link to={`/play/${index}`} key={index}>
-            <button>{translate("menu.play", { index: index + 1 })}</button>
-          </Link>
-        ))}
-      </div>
-    </div>
+
   );
 };
 export default HomePage;

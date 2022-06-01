@@ -8,48 +8,42 @@ const HomePage: FC = () => {
   const { setLocale } = useContext(LocaleContext)!;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        top: "40%",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 100,
-          height: "100%",
-          width: "100%",
-          textAlign: "center",
-        }}
-      >
-        {translate("title")}
+      <div className="home-page-picture">
+          <div className="home-page-layover">
+            <div
+                className="home-page-container"
+            >
+              <div
+                  className="home-page-title"
+              >
+                {translate("title")}
+              </div>
+              <div
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                  <div className="home-page-buttons">
+                      <Link to="/play">
+                          <button className="next-buttons home-buttons">{translate("menu.playNow")}</button>
+                      </Link>
+                      <Link to="/tutorial">
+                          <button className="next-buttons home-buttons">{translate("menu.tutorial")}</button>
+                      </Link>
+                      <Link to="/leaderboard">
+                          <button className="next-buttons home-buttons">{translate("leaderboard.title")}</button>
+                      </Link>
+                  </div>
+                <button className="next-buttons home-buttons" onClick={() => setLocale("en")}>
+                  {translate("menu.setEnglish")}
+                </button>
+                <button className="next-buttons home-buttons" onClick={() => setLocale("sv")}>
+                  {translate("menu.setSwedish")}
+                </button>
+              </div>
+            </div>
+          </div>
       </div>
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <Link to="/play">
-          <button>{translate("menu.playNow")}</button>
-        </Link>
-        <Link to="/tutorial">
-          <button>{translate("menu.tutorial")}</button>
-        </Link>
-        <Link to="/leaderboard">
-          <button>{translate("leaderboard.title")}</button>
-        </Link>
-        <button onClick={() => setLocale("en")}>
-          {translate("menu.setEnglish")}
-        </button>
-        <button onClick={() => setLocale("sv")}>
-          {translate("menu.setSwedish")}
-        </button>
-      </div>
-    </div>
   );
 };
 export default HomePage;
