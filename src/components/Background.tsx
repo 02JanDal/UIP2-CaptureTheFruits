@@ -18,19 +18,6 @@ const Background: FC = () => {
           }}>
 
       </div>
-    // <img
-    //     src={imageBackground}
-    //     alt=""
-    //     style={{
-    //       height: "100%",
-    //       width: "100%",
-    //       overflow: "hidden",
-    //       objectFit: "cover",
-    //       objectPosition: "top",
-    //         backgroundImage: imageBackground,
-    //         backgroundRepeat: "repeat",
-    //     }}
-    // />
   );
 };
 export default Background;

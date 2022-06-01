@@ -23,6 +23,7 @@ import TutorialFour from "./TutorialFour";
 import TutorialFive from "./TutorialFive";
 import { PlayingFieldDefinition } from "../playingFieldDefinition";
 import ExitDoor from "./ExitDoor";
+import HelpButton from "./HelpButton";
 
 const PlayingField: FC<{
   field: PlayingFieldDefinition;
@@ -33,6 +34,7 @@ const PlayingField: FC<{
 
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
+  const [tutorialStep, setTutorialStep] = useState(1);
 
   const {
     setPlayerVerticalVelocity,
@@ -103,10 +105,6 @@ const PlayingField: FC<{
     // should be in a new function!
     if (currentLives - 1 <= 0) {
       resetGame(setTouchedFruits);
-      // setPoints(0);
-      // setLives(3);
-      // setPlayerPos(playingField.playerStart);
-      // setTouchedFruits([]);
     }
   }
 
@@ -126,15 +124,17 @@ const PlayingField: FC<{
         left: -scrollOffset.x,
         bottom: -scrollOffset.y,
       }}
-      // some placeholder interaction just to test the physics
-      onDoubleClick={() => setPlayerVerticalVelocity(300)}
-      onClick={(e) =>
-        setPlayerPos({
-          x: e.clientX,
-          y: (e.target as HTMLDivElement).clientHeight - e.clientY,
-        })
-      }
+      onClick={(e) => {
+          let el = e.target as HTMLElement | null;
+          while (el && !el.classList.contains("talk-bubble") && !el.classList.contains("help")) {
+              el = el.parentElement;
+          }
+          if (!el) {
+              setTutorialStep(0);
+          }
+      }}
     >
+        <HelpButton showTutorial={() => setTutorialStep(1)}/>
       {platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
@@ -161,7 +161,12 @@ const PlayingField: FC<{
         }
         facing={facing}
       />
-      <div
+        {showTutorial && tutorialStep === 1? <TutorialOne onNext={() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
+            showTutorial && tutorialStep === 2? <TutorialTwo onNext={() => setTutorialStep(3)} onBack={() => setTutorialStep(1)} onClose={() => setTutorialStep(0)}/> :
+                showTutorial && tutorialStep === 3? <TutorialThree onNext={() => setTutorialStep(4)} onBack = {() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
+                    showTutorial && tutorialStep === 4? <TutorialFour onNext={() => setTutorialStep(5)} onBack ={() => setTutorialStep(3)} onClose={() => setTutorialStep(0)}/> :
+            showTutorial && tutorialStep === 5? <TutorialFive onNext={() => setTutorialStep(6)} onClose={() => setTutorialStep(0)}/> : null}
+        <div
         style={{
           // by using position fixed this div will be placed at the same place on
           // the screen, regardless of the offset of the rest of the playing field

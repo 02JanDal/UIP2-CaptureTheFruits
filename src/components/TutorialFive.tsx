@@ -3,49 +3,58 @@ import imageArrows from "../images/KeyboardArrows.png";
 import imageSpacebar from "../images/KeyboardSpacebar.jpeg";
 import imageStand from "../images/char-stand.png";
 import imageChar from "../images/char-tutorial.png";
+import {useTranslate} from "react-polyglot";
 
 /**
  * The background for our playing field. A blue sky, maybe some clouds (possibly animated) etc.
  */
-const TutorialFive: FC = () => {
+const TutorialFive: FC<{
+    onNext: () => void,
+    onClose: () => void,
+}> = (props) => {
+    const {onNext, onClose} = (props)
+    const translate = useTranslate()
+
     return (
-        <div className="talk-bubble tri-right round btm-left" style={{
-            left: 40,
-            bottom: 160,
-        }}>
+        <div className="talk-bubble tri-right round btm-left bubble-five">
             <div
                 style={{
                     backgroundColor: "lightyellow",
                     margin: "0 auto",
                     textAlign: "center",
                     borderRadius: 25,
-                    padding: 30,
+                    padding: 15,
                 }}>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    alignContent: "center",
-                }}>
-                    <div>
-                        <img src={imageChar} style={{
-                            width:70,
-                        }}/>
-                    </div>
+                <span style={{font: "initial", display: "flex", fontSize: 24}} onClick={onClose}>×</span>
+                <div style={{padding: 15}}>
                     <div style={{
-                        marginLeft:20,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        alignContent: "center",
                     }}>
                         <div>
-                            <div
-                                style={{
-                                    fontSize: 25,
-                                    marginLeft:10,
-                                    marginBottom: 20,
-                                }}>
-                                Ready to win?
-                            </div>
+                            <img src={imageChar} style={{
+                                width:70,
+                            }}/>
+                        </div>
+                        <div style={{
+                            marginLeft:20,
+                        }}>
                             <div>
-                                <button>Play now</button>
+                                <div
+                                    style={{
+                                        fontSize: 25,
+                                        marginLeft:10,
+                                        marginBottom: 20,
+                                    }}>
+                                    {translate("tutorialFive.title")}
+                                </div>
+                                <div>
+                                    <button onClick={onNext} className="next-buttons">
+                                        {translate("tutorialFive.play")}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

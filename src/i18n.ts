@@ -35,6 +35,35 @@ export const messages: Record<Locale, Messages> = {
       lives: "Lives left",
       date: "Date",
     },
+    tutorialOne: {
+      title: "How to move the character",
+      desc1: "Move up, down, left, and right",
+      desc2: "Jump!",
+      next: "Next",
+    },
+    tutorialTwo: {
+      title: "Collect as many points as possible",
+      tomato: "= 5 points",
+      banana: "= 10 points",
+      eggplant: "= -5 points",
+      back: "Back",
+      next: "Next",
+    },
+    tutorialThree: {
+      title: "Each player gets 3 lives",
+      desc: "When points get negative, player will lose a life",
+      back: "Back",
+      next: "Next",
+    },
+    tutorialFour: {
+      title: "If a player falls off the cliff, player will lose a life",
+      back: "Back",
+      next: "Next",
+    },
+    tutorialFive:{
+      title: "Ready to win?",
+      play: "Play now",
+    },
   },
   sv: {
     title: "Samla Frukterna",
@@ -62,6 +91,35 @@ export const messages: Record<Locale, Messages> = {
       points: "Poäng",
       lives: "Liv kvar",
       date: "Datum",
+    },
+    tutorialOne: {
+      title: "Hur man flyttar karaktären",
+      desc1: "Flytta upp, ner, vänster och höger",
+      desc2: "Hoppa!",
+      next: "Nästa",
+    },
+    tutorialTwo: {
+      title: "Samla så många poäng som möjligt",
+      tomato: "= 5 poäng",
+      banana: "= 10 poäng",
+      eggplant: "= -5 poäng",
+      back: "Tillbaka",
+      next: "Nästa",
+    },
+    tutorialThree: {
+      title: "Varje spelare får 3 liv",
+      desc: "När poängen blir negativa kommer spelaren att förlora ett liv",
+      back: "Tillbaka",
+      next: "Nästa",
+    },
+    tutorialFour: {
+      title: "Om en spelare faller från klippan kommer spelaren att förlora ett liv",
+      back: "Tillbaka",
+      next: "Nästa",
+    },
+    tutorialFive:{
+      title: "Redo att vinna?",
+      play: "Spela nu",
     },
   },
 };
