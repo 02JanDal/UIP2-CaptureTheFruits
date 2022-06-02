@@ -25,6 +25,7 @@ import { PlayingFieldDefinition } from "../playingFieldDefinition";
 import ExitDoor from "./ExitDoor";
 import HelpButton from "./HelpButton";
 import EndButton from "./EndButton";
+import {useNavigate} from "react-router-dom";
 
 const PlayingField: FC<{
   field: PlayingFieldDefinition;
@@ -82,7 +83,8 @@ const PlayingField: FC<{
     setPlayerPos
   );
 
-  const { fruits, setTouchedFruits } = useFruitController(
+    const navigate = useNavigate();
+    const { fruits, setTouchedFruits } = useFruitController(
     field.fruits,
     playerPos,
     (points) => {
@@ -93,6 +95,7 @@ const PlayingField: FC<{
       }
       if (currentLives - 1 <= 0) {
         resetGame(setTouchedFruits);
+        navigate("/lose-game");
       }
       console.log(`Touched fruit worth ${points} points`);
     }
@@ -106,6 +109,7 @@ const PlayingField: FC<{
     // should be in a new function!
     if (currentLives - 1 <= 0) {
       resetGame(setTouchedFruits);
+      navigate("/lose-game");
     }
   }
 

@@ -40,6 +40,11 @@ export const messages: Record<Locale, Messages> = {
       lives: "Lives left",
       date: "Date",
     },
+    loseGame: {
+      title: "Oh no!",
+      playAgain: "You ran out of lives! Play again?",
+      playButton: "Play again",
+    },
     tutorialOne: {
       title: "How to move the character",
       desc1: "Move up, down, left, and right",
@@ -93,6 +98,11 @@ export const messages: Record<Locale, Messages> = {
       enterNameForLeaderboard:
         "Ange ditt namn för att läggas till på topplistan",
       save: "Spara",
+    },
+    loseGame:{
+      title: "Å nej!",
+      playAgain: "Du fick slut på liv! Spela igen?",
+      playButton: "Spela igen",
     },
     leaderboard: {
       title: "Topplistan",

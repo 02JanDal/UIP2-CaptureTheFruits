@@ -15,6 +15,7 @@ import {
   serializeLeaderboard,
 } from "./leaderboard";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import {LoseGamePage} from "./pages/LoseGamePage";
 
 const App: FC = () => {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ const App: FC = () => {
               }
             />
             <Route path="/after-game" element={<AfterGamePage />} />
+            <Route path="/lose-game" element={<LoseGamePage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
           </Routes>
         </I18n>
