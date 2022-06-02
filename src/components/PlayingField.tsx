@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
@@ -33,12 +33,27 @@ const PlayingField: FC<{
   showTutorial?: boolean;
   onFinished: (lives: number, points: number) => void;
 }> = (props) => {
+
   const { field, showTutorial, onFinished } = props;
 
   const [tutorialStep, setTutorialStep] = useState(1);
 
   const pointDownSound = useRef(false);
   const pointUpSound = useRef(false);
+
+  const [isMobile, setIsMobile] = useState(false)
+  const handleResize = () => {
+    if (window.innerWidth <= 425) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
+// create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
 
   const {
     playerPos,
@@ -200,9 +215,13 @@ const PlayingField: FC<{
         <SoundMuteUn />
         <Lives lives={currentLives} />
         <Points points={currentPoints} />
+
       </div>
 
-      <JoyStickModule jump={jump} onWalk={setJoystickWalk} />
+      { !showTutorial && isMobile ? (
+          <JoyStickModule jump={jump} onWalk={setJoystickWalk} />
+      ) : null }
+
 
       <ReactHowler
         src="/sounds/background.mp3"
