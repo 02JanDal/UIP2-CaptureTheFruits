@@ -7,7 +7,7 @@ const JoyStickModule: FC<{
   onWalk: (d: "left" | "right" | null) => void;
 }> = (props) => {
   const joyStickSize = useRef(80);
-  const joyStickMoveMargin = useRef(16);
+  const joyStickMoveMargin = useRef(10);
   const joyStickLastMove = useRef("");
   const [jumpPressed, setJumpPressed] = useState(false);
 
@@ -79,8 +79,10 @@ const JoyStickModule: FC<{
     >
       <Joystick
         size={joyStickSize.current}
+/*
         baseShape={JoystickShape.Square}
         stickShape={JoystickShape.Square}
+*/
         baseColor="#ca9b33"
         stickColor="#23af16"
         throttle={250}
