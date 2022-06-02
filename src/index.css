@@ -1,3 +1,12 @@
+/*****************************************
+ File: index.css
+ THE STYLING CSS FILE FOR THE GAMING APP
+ *****************************************/
+
+/***********************************
+GENERAL SETTING:
+of the font face, html, body, root
+ ***********************************/
 @font-face {
     font-family: StoryTelling;
     src: local("StoryTelling"), local("StoryTellingRegular"), url(./fonts/StoryTellingRegular-8MZ1n.ttf) format("truetype");
@@ -21,6 +30,9 @@ html, body, #root {
     background-repeat:repeat;
 }
 
+/***************
+PLAYING FIELD
+ **************/
 .playing-field-info {
     /* https://caniuse.com/text-stroke */
     -webkit-text-stroke: 1px black;
@@ -31,13 +43,13 @@ html, body, #root {
 }
 
 /**
-TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
+THE TUTORIAL PAGES USING TALK-BUBBLE
+Source based on: https://codepen.io/Founts/pen/AJyVOr
  */
 .container {
     padding: 5% 5%;
 }
 
-/* CSS talk bubble */
 .talk-bubble {
     margin: 40px;
     display: inline-block;
@@ -183,21 +195,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     border: 12px solid;
     border-color: white white transparent transparent;
 }
-/*
-	left: -8px;
-  right: auto;
-  top: auto;
-	bottom: -40px;
-	border: 32px solid;
-	border-color: transparent transparent transparent #666;
-	left: 0px;
-  right: auto;
-  top: auto;
-	bottom: -20px;
-	border: 22px solid;
-	border-color: transparent transparent transparent lightyellow;
 
-/*Right triangle, placed bottom right side slightly in*/
 .tri-right.border.btm-right:before {
     content: ' ';
     position: absolute;
@@ -285,6 +283,10 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     -webkit-margin-after: 0em;
 }
 
+/**************************
+THE TUTORIAL PAGES BUTTONS
+ ***************************/
+
 .next-buttons{
     background: #291509;
     border: 5px solid #291509;
@@ -354,6 +356,11 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     bottom: 160px;
 }
 
+/************************************************
+THE HELP BUTTON TO TRIGGER THE TUTORIAL PAGES
+AND THE CLOSE BUTTON TO CLOSE THE TUTORIAL PAGES
+ **************************************************/
+
 .help{
     height: 50px;
     width: 50px;
@@ -394,6 +401,10 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
 .close:after {
     transform: rotate(-45deg);
 }
+
+/*****************
+HOME PAGE
+ ******************/
 
 .home-page-picture{
     background-image:url("images/background-3.png");
@@ -438,6 +449,10 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     flex-direction: row;
 }
 
+/*******************
+THE LEADERBOARD PAGE
+ ********************/
+
 .leaderboard-input{
     border: 1px solid #291509;
     border-radius: 5px;
@@ -453,6 +468,10 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     text-decoration: none;
     font-family: Sans-Serif;
 }
+
+/*******************
+THE END GAME PAGE
+ ********************/
 
 .end-page-container{
     background: white;
@@ -470,10 +489,11 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     margin-bottom: 10px;
 }
 
-/**
+/*******************************************************************
+THE LEADERBOARD TABLE
 Source inspiration for the styled table:
 https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
- */
+ ********************************************************************/
 
 .styled-table {
     border-collapse: collapse;
@@ -509,7 +529,9 @@ https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #291509;
 }
-
+/************************************
+SCREEN OPTIMIZATION FOR MOBILE
+ *************************************/
 @media(max-width:425px){
     .bubble-two{
         left:40px;

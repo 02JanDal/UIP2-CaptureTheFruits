@@ -1,13 +1,24 @@
 import { createContext } from "react";
 
+/**
+ * File: i18n.ts
+ *
+ * This file contains the dictionary of all the strings/texts
+ * used in the game.
+ *
+ * The two main languages used are English and Swedish
+ */
 export type Locale = "en" | "sv";
 
+// Creating the locale to be either english or swedish
 export const LocaleContext = createContext<
   { locale: Locale; setLocale: (l: Locale) => void } | undefined
 >(undefined);
 
+// The dictionary is strings
 type Messages = { [key: string]: string | Messages };
 
+// Creating the dictionary in English and Swedish
 export const messages: Record<Locale, Messages> = {
   en: {
     title: "Capture the Fruits",

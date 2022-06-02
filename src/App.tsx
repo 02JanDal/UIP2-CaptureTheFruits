@@ -19,19 +19,40 @@ import { LoseGamePage } from "./pages/LoseGamePage";
 import { SoundContext } from "./sound";
 import ReactHowler from "react-howler";
 
+/**
+ * File: App.tsx
+ *
+ * This file contains "the index" that executes
+ * all the pages in the gaming app.
+ *
+ * @constructor
+ */
 const App: FC = () => {
+
+  // Initialize the useNavigate() to navigate to different pages
   const navigate = useNavigate();
 
+  // Setting the local language to English
   const [locale, setLocale] = useState<Locale>("en");
+
+  // Setting background music is muted to true, initially
   const [muted, setMuted] = useState(true);
+  // Continuously checks whether the state of the background music has changed
   useEffect(() => {
     Howler.mute(muted);
   }, [muted]);
 
+  // Get the current leaderboard from the local storage
   const rawLeaderboard = localStorage.getItem("leaderboard");
+
+  // The getter and setter for the leaderboard. If there is a leaderboard,
+  // it will be set to the current leaderboard. If there is no leaderboard.
+  // If there is no leaderboard value yet, then it will return an empty array.
   const [leaderboard, setLeaderboard] = useState<Leaderboard>(
     rawLeaderboard ? deserializeLeaderboard(rawLeaderboard) : []
   );
+
+  // Setting the leaderboard
   const actualSetLeaderboard = (lb: Leaderboard) => {
     localStorage.setItem("leaderboard", serializeLeaderboard(lb));
     setLeaderboard(lb);
@@ -48,10 +69,13 @@ const App: FC = () => {
      * object.
      */
     <LocaleContext.Provider value={{ locale, setLocale }}>
+      {/* Setting the leaderboard */}
       <LeaderboardContext.Provider
         value={{ leaderboard, setLeaderboard: actualSetLeaderboard }}
       >
+        {/* Setting the sound/backsound music */}
         <SoundContext.Provider value={{ muted, setMuted }}>
+          {/* Setting the background music using ReactHowler */}
           <ReactHowler
             src="/sounds/background.mp3"
             preload={true}
@@ -61,10 +85,15 @@ const App: FC = () => {
             volume={0.07}
           />
           <I18n locale={locale} messages={messages[locale]}>
+            {/* Using React Router to route to different pages */}
             <Routes>
+              {/* Route to home page */}
               <Route path="/" element={<HomePage />} />
+              {/* Route to choose page */}
               <Route path="/play" element={<ChoosePage />} />
+              {/* Route to play page, depending on which level */}
               <Route path="/play/:id" element={<PlayPage />} />
+              {/* Route to tutorial page */}
               <Route
                 path="/tutorial"
                 element={
@@ -75,8 +104,11 @@ const App: FC = () => {
                   />
                 }
               />
+              {/* Route to after game page */}
               <Route path="/after-game" element={<AfterGamePage />} />
+              {/* Route to game lost page */}
               <Route path="/lose-game" element={<LoseGamePage />} />
+              {/* Route to leaderboard page */}
               <Route path="/leaderboard" element={<LeaderboardPage />} />
             </Routes>
           </I18n>

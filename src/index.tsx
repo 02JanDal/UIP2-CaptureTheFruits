@@ -5,6 +5,12 @@ import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
+/**
+ * File: index.tsx
+ *
+ * The index file for the gaming app by creating the root and
+ * executing the App.tsx here.
+ */
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
       <BrowserRouter>
