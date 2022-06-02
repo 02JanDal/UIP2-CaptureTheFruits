@@ -14,13 +14,29 @@ import imageWalk8 from "../images/char-walk-8.png";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import { PLAYER_HEIGHT, PLAYER_WIDTH } from "../hooks/usePhysicsController";
 
+/**
+ * File: Character.tsx
+ *
+ * This file contains the character of our game.
+ * There are many character images in this file, depending on whether
+ * the character is standing still, walking, or jumping.
+ *
+ * @param props The position of the character, the boolean whether or not the character
+ * is walking or jumping, the boolean for the character facing left or right
+ * @constructor The Character file
+ */
 const Character: FC<
   Position & { walking: boolean; jumping: boolean; facing: "left" | "right" }
 > = (props) => {
+  // Declaring the arguments (character position and whether or not the
+  // character is walking or jumping, and the direction of the character
   const { x, y, walking, jumping, facing } = props;
 
+  // The set a timer for when the character walks
   const [walkTime, setWalkTime] = useState(0);
   useAnimationFrame((delta) => setWalkTime(walkTime + delta));
+
+  // Change the characters' images while the character is walking
   const walkIndex = Math.round((walkTime / 125) % 7);
   const imageWalk = [
     imageWalk1,
@@ -34,6 +50,8 @@ const Character: FC<
   ][walkIndex];
 
   return (
+      // Return the image of the character and changing the images while the character
+      // is walking or jumping
     <PositionableDiv x={x} y={y} width={PLAYER_WIDTH} height={PLAYER_HEIGHT}>
       <img
         src={jumping ? imageJump : walking ? imageWalk : imageStand}
@@ -45,4 +63,5 @@ const Character: FC<
     </PositionableDiv>
   );
 };
+// Exporting the Character to be used in the playing field
 export default Character;
