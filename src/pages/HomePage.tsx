@@ -2,6 +2,7 @@ import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useTranslate } from "react-polyglot";
 import { LocaleContext } from "../i18n";
+import SoundButton from "../components/SoundButton";
 
 const HomePage: FC = () => {
   const translate = useTranslate();
@@ -40,6 +41,7 @@ const HomePage: FC = () => {
                 <button className="next-buttons home-buttons" onClick={() => setLocale("sv")}>
                   {translate("menu.setSwedish")}
                 </button>
+                  <SoundButton source="https://opengameart.org/sites/default/files/Komiku%20-%20Poupi%27s%20incredible%20adventures%20%21%20-%2012%20Bicycle_0.mp3"/>
               </div>
             </div>
           </div>
