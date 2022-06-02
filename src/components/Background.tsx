@@ -22,16 +22,7 @@ const Background: FC = () => {
         backgroundImage: `url(${imageBackground})`,
         backgroundRepeat: "repeat",
       }}
-    >
-      <ReactHowler
-        src="/sounds/background.mp3"
-        preload={true}
-        loop={true}
-        html5={true}
-        playing={true}
-        volume={0.07}
-      />
-    </div>
+    />
   );
 };
 // Exporting the background to be used in the playing field

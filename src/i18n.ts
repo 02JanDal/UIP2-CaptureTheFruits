@@ -21,12 +21,13 @@ export const messages: Record<Locale, Messages> = {
       play: "Play level %{index}",
       setEnglish: "English",
       setSwedish: "Swedish",
+      mute: "Mute music",
+      unmute: "Play music",
     },
     afterGame: {
       congratulations: "Congratulations!",
-      youFinished:
-        "Congratulations! You finished the game with:",
-      statistics:"Points: %{points} and Lives: %{lives} ",
+      youFinished: "Congratulations! You finished the game with:",
+      statistics: "Points: %{points} and Lives: %{lives} ",
       left: "left",
       backToMenu: "Back to main menu",
       enterNameForLeaderboard: "Enter your name to be added to the leaderboard",
@@ -70,7 +71,7 @@ export const messages: Record<Locale, Messages> = {
       back: "Back",
       next: "Next",
     },
-    tutorialFive:{
+    tutorialFive: {
       title: "Ready to win?",
       play: "Play now",
     },
@@ -87,11 +88,12 @@ export const messages: Record<Locale, Messages> = {
       play: "Värld %{index}",
       setEnglish: "Engelska",
       setSwedish: "Svenska",
+      mute: "Pausa musik",
+      unmute: "Spela musik",
     },
     afterGame: {
       congratulations: "Grattis!",
-      youFinished:
-        "Grattis! Du klarade spelet med ",
+      youFinished: "Grattis! Du klarade spelet med ",
       statistics: "Poäng: %{points} och liv: %{lives}",
       left: "kvar",
       backToMenu: "Tillbaka till huvudmenyn",
@@ -99,7 +101,7 @@ export const messages: Record<Locale, Messages> = {
         "Ange ditt namn för att läggas till på topplistan",
       save: "Spara",
     },
-    loseGame:{
+    loseGame: {
       title: "Å nej!",
       playAgain: "Du fick slut på liv! Spela igen?",
       playButton: "Spela igen",
@@ -133,11 +135,12 @@ export const messages: Record<Locale, Messages> = {
       next: "Nästa",
     },
     tutorialFour: {
-      title: "Om en spelare faller från klippan kommer spelaren att förlora ett liv",
+      title:
+        "Om en spelare faller från klippan kommer spelaren att förlora ett liv",
       back: "Tillbaka",
       next: "Nästa",
     },
-    tutorialFive:{
+    tutorialFive: {
       title: "Redo att vinna?",
       play: "Spela nu",
     },

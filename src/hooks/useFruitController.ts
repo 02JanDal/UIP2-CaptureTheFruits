@@ -15,8 +15,6 @@ export default function useFruitController(
 ) {
   const [touchedFruits, setTouchedFruits] = useState<number[]>([]);
 
-
-
   useEffect(() => {
     fruits.forEach((fruit, index) => {
       if (
@@ -28,7 +26,6 @@ export default function useFruitController(
       ) {
         setTouchedFruits([...touchedFruits, index]);
         onFruitTouched(fruit.points);
-
       }
     });
   }, [fruits, onFruitTouched, player, touchedFruits]);

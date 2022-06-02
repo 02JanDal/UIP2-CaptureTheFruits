@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import PlayingField from "./components/PlayingField";
 import { Locale, LocaleContext, messages } from "./i18n";
 import { I18n } from "react-polyglot";
@@ -15,12 +15,18 @@ import {
   serializeLeaderboard,
 } from "./leaderboard";
 import LeaderboardPage from "./pages/LeaderboardPage";
-import {LoseGamePage} from "./pages/LoseGamePage";
+import { LoseGamePage } from "./pages/LoseGamePage";
+import { SoundContext } from "./sound";
+import ReactHowler from "react-howler";
 
 const App: FC = () => {
   const navigate = useNavigate();
 
   const [locale, setLocale] = useState<Locale>("en");
+  const [muted, setMuted] = useState(true);
+  useEffect(() => {
+    Howler.mute(muted);
+  }, [muted]);
 
   const rawLeaderboard = localStorage.getItem("leaderboard");
   const [leaderboard, setLeaderboard] = useState<Leaderboard>(
@@ -45,26 +51,36 @@ const App: FC = () => {
       <LeaderboardContext.Provider
         value={{ leaderboard, setLeaderboard: actualSetLeaderboard }}
       >
-        <I18n locale={locale} messages={messages[locale]}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/play" element={<ChoosePage />} />
-            <Route path="/play/:id" element={<PlayPage />} />
-            <Route
-              path="/tutorial"
-              element={
-                <PlayingField
-                  field={playingFields[0]}
-                  showTutorial
-                  onFinished={() => navigate("/")}
-                />
-              }
-            />
-            <Route path="/after-game" element={<AfterGamePage />} />
-            <Route path="/lose-game" element={<LoseGamePage />} />
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
-          </Routes>
-        </I18n>
+        <SoundContext.Provider value={{ muted, setMuted }}>
+          <ReactHowler
+            src="/sounds/background.mp3"
+            preload={true}
+            loop={true}
+            html5={true}
+            playing={true}
+            volume={0.07}
+          />
+          <I18n locale={locale} messages={messages[locale]}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/play" element={<ChoosePage />} />
+              <Route path="/play/:id" element={<PlayPage />} />
+              <Route
+                path="/tutorial"
+                element={
+                  <PlayingField
+                    field={playingFields[0]}
+                    showTutorial
+                    onFinished={() => navigate("/")}
+                  />
+                }
+              />
+              <Route path="/after-game" element={<AfterGamePage />} />
+              <Route path="/lose-game" element={<LoseGamePage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
+            </Routes>
+          </I18n>
+        </SoundContext.Provider>
       </LeaderboardContext.Provider>
     </LocaleContext.Provider>
   );

@@ -1,10 +1,8 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
-import usePhysicsController, {
-  PLAYER_HEIGHT,
-} from "../hooks/usePhysicsController";
+import usePhysicsController from "../hooks/usePhysicsController";
 import Points from "./Points";
 import Lives from "./Lives";
 import useFruitController from "../hooks/useFruitController";
@@ -25,7 +23,7 @@ import { PlayingFieldDefinition } from "../playingFieldDefinition";
 import ExitDoor from "./ExitDoor";
 import HelpButton from "./HelpButton";
 import EndButton from "./EndButton";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
 import JoyStickModule from "./JoyStickModule";
@@ -37,35 +35,12 @@ const PlayingField: FC<{
 }> = (props) => {
   const { field, showTutorial, onFinished } = props;
 
-  const [currentPoints, setPoints] = useState(0);
-  const [currentLives, setLives] = useState(3);
   const [tutorialStep, setTutorialStep] = useState(1);
 
-  const gameOverSound = useRef(false);
   const pointDownSound = useRef(false);
   const pointUpSound = useRef(false);
 
-  // Observing currentLives
-  useEffect(() => {
-    if (currentLives <= 0) {
-      gameOverSound.current = true;
-    }
-  }, [currentLives]);
-
-  // Game End
-  useEffect(() => {
-    if (gameOverSound)
-      setTimeout(() => {
-        setPoints(0);
-        setLives(3);
-        setPlayerPos(field.playerStart);
-        setTouchedFruits([]);
-        gameOverSound.current = false;
-      }, 1000); // making delay before ReSet
-  }, [gameOverSound]);
-
   const {
-    setPlayerVerticalVelocity,
     playerPos,
     setPlayerPos,
     jump,
@@ -75,31 +50,10 @@ const PlayingField: FC<{
     atExit,
   } = usePhysicsController(field, () => {
     setPlayerPos(field.playerStart);
-    console.log("fell off");
+    looseLife();
   });
 
-  useEffect(() => {
-    if (currentLives <= 0) {
-      gameOverSound.current = true;
-    }
-  }, [currentLives]);
-
-  function setJoyStickWalk(d: string) {
-    //console.log("joystickWalk  =>  " + d);
-    if (d == "left" && joystickWalk != "left") {
-      setJoystickWalk("left");
-    } else if (d == "right" && joystickWalk != "right") {
-      setJoystickWalk("right");
-    } else if (d == "" && joystickWalk != null) {
-      setJoystickWalk(null);
-    }
-  }
-  const [walk, setwalk] = useState<null | "left" | "right">(null);
-  const [joystickWalk, setJoystickWalk] = useState<null | "left" | "right">(
-    null
-  );
-  const [facing, setFacing] = useState<"left" | "right">("right");
-  const { keyboardWalk } = useKeyboardController(jump, () => {
+  const onUseObject = () => {
     if (atExit) {
       console.log(
         "Finished game with",
@@ -110,15 +64,15 @@ const PlayingField: FC<{
       );
       onFinished(currentLives, currentPoints);
     }
-  });
+  };
 
-  useEffect(() => {
-    setwalk(keyboardWalk);
-  }, [keyboardWalk]);
-  useEffect(() => {
-    setwalk(joystickWalk);
-  }, [joystickWalk]);
+  const [joystickWalk, setJoystickWalk] = useState<null | "left" | "right">(
+    null
+  );
+  const { keyboardWalk } = useKeyboardController(jump, onUseObject);
+  const walk = keyboardWalk || joystickWalk;
 
+  const [facing, setFacing] = useState<"left" | "right">("right");
   useAnimationFrame((delta) => {
     const PIXEL_PER_MS = 1 / 8;
     if (walk === "left" && canGoLeft) {
@@ -130,47 +84,18 @@ const PlayingField: FC<{
     }
   });
 
-  const { resetGame } = useGameController(
-    field,
-    setLives,
-    setPoints,
-    setPlayerPos
-  );
-
-    const navigate = useNavigate();
-    const { fruits, setTouchedFruits } = useFruitController(
-    field.fruits,
-    playerPos,
-    (points) => {
-      setPoints(currentPoints + points);
-      console.log(currentPoints);
-      /*
-      Playing sound on point Up / Down
-      */
-      pointUpSound.current = points > 0 ? true : false;
-
-      if (currentPoints + points < 0 && points === -5) {
-        setLives(currentLives - 1);
-      }
-      if (currentLives - 1 <= 0) {
-        resetGame(setTouchedFruits);
-        navigate("/lose-game");
-      }
-      console.log(`Touched fruit worth ${points} points`);
-    }
-  );
-
-  // Player falling gets reset, works here falling works here!!
-  let pos = { ...playerPos };
-  if (pos.y + PLAYER_HEIGHT < 0) {
-    setPlayerPos(field.playerStart);
-    setLives(currentLives - 1);
-    // should be in a new function!
-    if (currentLives - 1 <= 0) {
-      resetGame(setTouchedFruits);
+  const { looseLife, currentPoints, currentLives, setPoints } =
+    useGameController(field, setPlayerPos, () => {
       navigate("/lose-game");
-    }
-  }
+    });
+
+  const navigate = useNavigate();
+  const { fruits } = useFruitController(field.fruits, playerPos, (points) => {
+    setPoints(currentPoints + points);
+    // Playing sound on point Up / Down
+    pointUpSound.current = points > 0;
+    pointDownSound.current = points < 0;
+  });
 
   const { flowers, ladders, trees, platforms } = field;
 
@@ -189,17 +114,21 @@ const PlayingField: FC<{
         bottom: -scrollOffset.y,
       }}
       onClick={(e) => {
-          let el = e.target as HTMLElement | null;
-          while (el && !el.classList.contains("talk-bubble") && !el.classList.contains("help")) {
-              el = el.parentElement;
-          }
-          if (!el) {
-              setTutorialStep(0);
-          }
+        let el = e.target as HTMLElement | null;
+        while (
+          el &&
+          !el.classList.contains("talk-bubble") &&
+          !el.classList.contains("help")
+        ) {
+          el = el.parentElement;
+        }
+        if (!el) {
+          setTutorialStep(0);
+        }
       }}
     >
-        <HelpButton showTutorial={() => setTutorialStep(1)}/>
-        <EndButton/>
+      <HelpButton showTutorial={() => setTutorialStep(1)} />
+      <EndButton />
       {platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
@@ -226,12 +155,36 @@ const PlayingField: FC<{
         }
         facing={facing}
       />
-        {showTutorial && tutorialStep === 1? <TutorialOne onNext={() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
-            showTutorial && tutorialStep === 2? <TutorialTwo onNext={() => setTutorialStep(3)} onBack={() => setTutorialStep(1)} onClose={() => setTutorialStep(0)}/> :
-                showTutorial && tutorialStep === 3? <TutorialThree onNext={() => setTutorialStep(4)} onBack = {() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
-                    showTutorial && tutorialStep === 4? <TutorialFour onNext={() => setTutorialStep(5)} onBack ={() => setTutorialStep(3)} onClose={() => setTutorialStep(0)}/> :
-            showTutorial && tutorialStep === 5? <TutorialFive onNext={() => setTutorialStep(6)} onClose={() => setTutorialStep(0)}/> : null}
-        <div
+      {showTutorial && tutorialStep === 1 ? (
+        <TutorialOne
+          onNext={() => setTutorialStep(2)}
+          onClose={() => setTutorialStep(0)}
+        />
+      ) : showTutorial && tutorialStep === 2 ? (
+        <TutorialTwo
+          onNext={() => setTutorialStep(3)}
+          onBack={() => setTutorialStep(1)}
+          onClose={() => setTutorialStep(0)}
+        />
+      ) : showTutorial && tutorialStep === 3 ? (
+        <TutorialThree
+          onNext={() => setTutorialStep(4)}
+          onBack={() => setTutorialStep(2)}
+          onClose={() => setTutorialStep(0)}
+        />
+      ) : showTutorial && tutorialStep === 4 ? (
+        <TutorialFour
+          onNext={() => setTutorialStep(5)}
+          onBack={() => setTutorialStep(3)}
+          onClose={() => setTutorialStep(0)}
+        />
+      ) : showTutorial && tutorialStep === 5 ? (
+        <TutorialFive
+          onNext={() => setTutorialStep(6)}
+          onClose={() => setTutorialStep(0)}
+        />
+      ) : null}
+      <div
         style={{
           // by using position fixed this div will be placed at the same place on
           // the screen, regardless of the offset of the rest of the playing field
@@ -244,12 +197,12 @@ const PlayingField: FC<{
         }}
         className="playing-field-info"
       >
-        <SoundMuteUn image={0} />
+        <SoundMuteUn />
         <Lives lives={currentLives} />
         <Points points={currentPoints} />
       </div>
 
-      <JoyStickModule jump={jump} onwalk={setJoyStickWalk} />
+      <JoyStickModule jump={jump} onWalk={setJoystickWalk} />
 
       <ReactHowler
         src="/sounds/background.mp3"
@@ -258,15 +211,6 @@ const PlayingField: FC<{
         html5={true}
         playing={true}
         volume={0.07}
-      />
-
-      <ReactHowler
-        src="/sounds/gameOver.wav"
-        preload={true}
-        html5={true}
-        loop={false}
-        playing={gameOverSound.current}
-        volume={HOWLER_VOLUME}
       />
 
       <ReactHowler

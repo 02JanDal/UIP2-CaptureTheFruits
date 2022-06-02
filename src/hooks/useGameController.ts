@@ -1,19 +1,30 @@
 import { PlayingFieldDefinition } from "../playingFieldDefinition";
+import { useEffect, useState } from "react";
 
 export default function useGameController(
   playingField: PlayingFieldDefinition,
-  setLives: (p: number) => void,
-  setPoints: (p: number) => void,
-  setPlayerPos: (p: PlayingFieldDefinition["playerStart"]) => void
+  setPlayerPos: (p: PlayingFieldDefinition["playerStart"]) => void,
+  onLost: () => void
 ) {
-  const resetGame = (setTouchedFruits: (p: number[]) => void) => {
-    // I dont know why it's twisted??
-    setLives(3);
-    setPoints(0);
-    setPlayerPos(playingField.playerStart);
-    setTouchedFruits([]);
-  };
+  const [currentPoints, setPoints] = useState(0);
+  const [currentLives, setLives] = useState(3);
+
+  useEffect(() => {
+    if (currentPoints < 0) {
+      setLives(currentLives - 1);
+      setPoints(0);
+    }
+  }, [currentLives, currentPoints]);
+  useEffect(() => {
+    if (currentLives <= 0) {
+      onLost();
+    }
+  }, [currentLives, onLost]);
+
   return {
-    resetGame,
+    currentPoints,
+    currentLives,
+    setPoints,
+    looseLife: () => setLives(currentLives - 1),
   };
 }

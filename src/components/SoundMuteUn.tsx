@@ -1,31 +1,19 @@
-import { FC,  useEffect, useRef } from "react";
+import { FC, useEffect, useState } from "react";
 import muteImage from "../images/mute.png";
 import unMuteImage from "../images/unmute.png";
+import { useSound } from "../sound";
 
-const SoundMuteUn: FC<{ image: number }> = (props) => {
-  /*
-  * Default value false to start for mute
-  *
-  * true for play with sound
-  *
-  * */
-  const mute = useRef(false);
-  useEffect(() => {
-    Howler.mute(!mute.current);
-  }, [mute.current]);
+const SoundMuteUn: FC = () => {
+  const { muted, setMuted } = useSound();
 
   return (
     <div>
-
       <img
-        onClick={() => mute.current = !mute.current }
-        src={mute.current ? unMuteImage : muteImage}
+        onClick={() => setMuted(!muted)}
+        src={muted ? muteImage : unMuteImage}
         width="24"
         height="24"
       />
-
-
-
     </div>
   );
 };
