@@ -28,7 +28,7 @@ const TutorialThree: FC<{
         <div className={`bubble-three talk-bubble tri-right round ${isMobile ? "btm-left" : "right-top"}`}>
             <div
                 style={{
-                    backgroundColor: "lightyellow",
+                    backgroundColor: "white",
                     margin: "0 auto",
                     textAlign: "center",
                     borderRadius: 25,

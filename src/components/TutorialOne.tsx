@@ -18,7 +18,7 @@ const TutorialOne: FC<{
         <div className="talk-bubble tri-right round btm-left bubble-one">
             <div
                 style={{
-                    backgroundColor: "lightyellow",
+                    backgroundColor: "white",
                     margin: "0 auto",
                     textAlign: "center",
                     borderRadius: 25,

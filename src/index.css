@@ -44,7 +44,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     position: absolute;
     width: 20%;
     height: auto;
-    background-color: lightyellow;
+    background-color: white;
 }
 .border{
     border: 8px solid #666;
@@ -79,7 +79,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: 0px;
     bottom: auto;
     border: 22px solid;
-    border-color: lightyellow transparent transparent transparent;
+    border-color: white transparent transparent transparent;
 }
 
 /* Right triangle, left side slightly down */
@@ -105,7 +105,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: 38px;
     bottom: auto;
     border: 12px solid;
-    border-color: lightyellow lightyellow transparent transparent;
+    border-color: white white transparent transparent;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -131,7 +131,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: auto;
     bottom: -20px;
     border: 22px solid;
-    border-color: transparent transparent transparent lightyellow;
+    border-color: transparent transparent transparent white;
 }
 
 /*Right triangle, placed bottom left side slightly in*/
@@ -157,7 +157,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: auto;
     bottom: -20px;
     border: 12px solid;
-    border-color: lightyellow transparent transparent lightyellow;
+    border-color: white transparent transparent white;
 }
 
 /*Right triangle, placed bottom right side slightly in*/
@@ -181,7 +181,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     right: 38px;
     bottom: -20px;
     border: 12px solid;
-    border-color: lightyellow lightyellow transparent transparent;
+    border-color: white white transparent transparent;
 }
 /*
 	left: -8px;
@@ -218,7 +218,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     right: 0px;
     bottom: -20px;
     border: 12px solid;
-    border-color: lightyellow lightyellow transparent transparent;
+    border-color: white white transparent transparent;
 }
 
 /* Right triangle, right side slightly down*/
@@ -244,7 +244,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: 38px;
     bottom: auto;
     border: 12px solid;
-    border-color: lightyellow transparent transparent lightyellow;
+    border-color: white transparent transparent white;
 }
 
 /* Right triangle placed top right flush. */
@@ -270,7 +270,7 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     top: 0px;
     bottom: auto;
     border: 20px solid;
-    border-color: lightyellow transparent transparent transparent;
+    border-color: white transparent transparent transparent;
 }
 
 /* talk bubble contents */
@@ -306,6 +306,25 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     border: 5px solid #E5D4CB !important;
     font-weight:bold;
 
+}
+
+.next-buttons.endgame-buttons{
+    font-size:18px;
+    padding: 10px;
+    margin:10px;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.25);
+    font-weight:bold;
+    color: black;
+    background: #E5D4CB !important;
+    border: 5px solid #E5D4CB !important;
+}
+
+.next-buttons.save-button{
+    font-weight:bold;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.25);
+    color: black;
+    background: #E5D4CB !important;
+    border: 5px solid #E5D4CB !important;
 }
 
 .bubble-one{
@@ -387,6 +406,12 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     background: rgba(45, 45, 45, 0.3);
     width:100%;
     height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 .home-page-container{
@@ -394,7 +419,6 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    top: 40%;
     position: relative;
 }
 
@@ -412,6 +436,78 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
 .home-page-buttons{
     display:flex;
     flex-direction: row;
+}
+
+.leaderboard-input{
+    border: 1px solid #291509;
+    border-radius: 5px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.exit-button{
+    background: #CD380A;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-family: Sans-Serif;
+}
+
+.end-page-container{
+    background: white;
+    padding: 20px;
+    width: auto;
+    border-radius: 20px;
+    align-items: center;
+    text-align: center;
+    top: 0%;
+}
+
+.end-page-title{
+    font-size: 50px;
+    -webkit-text-stroke: 2px black;
+    margin-bottom: 10px;
+}
+
+/**
+Source inspiration for the styled table:
+https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
+ */
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 25px;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #291509;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:nth-of-type(odd) {
+    background-color: #dddddd;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #291509;
 }
 
 @media(max-width:425px){
@@ -432,9 +528,6 @@ TAKEN FROM CODEPEN: https://codepen.io/Founts/pen/AJyVOr
     .bubble-five{
         left: 40px;
         bottom: 160px;
-    }
-    .home-page-container{
-        top:20%;
     }
     .home-page-title{
         font-size:70px;

@@ -23,8 +23,11 @@ export const messages: Record<Locale, Messages> = {
       setSwedish: "Swedish",
     },
     afterGame: {
+      congratulations: "Congratulations!",
       youFinished:
-        "You finished the game with %{points} points and %{lives} lives left",
+        "Congratulations! You finished the game with:",
+      statistics:"Points: %{points} and Lives: %{lives} ",
+      left: "left",
       backToMenu: "Back to main menu",
       enterNameForLeaderboard: "Enter your name to be added to the leaderboard",
       save: "Save",
@@ -81,8 +84,11 @@ export const messages: Record<Locale, Messages> = {
       setSwedish: "Svenska",
     },
     afterGame: {
+      congratulations: "Grattis!",
       youFinished:
-        "Du klarade spelet med %{points} poäng och %{lives} liv kvar",
+        "Grattis! Du klarade spelet med ",
+      statistics: "Poäng: %{points} och liv: %{lives}",
+      left: "kvar",
       backToMenu: "Tillbaka till huvudmenyn",
       enterNameForLeaderboard:
         "Ange ditt namn för att läggas till på topplistan",

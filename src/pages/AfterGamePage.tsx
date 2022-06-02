@@ -32,59 +32,53 @@ export const AfterGamePage: FC = () => {
   const { id, lives, points } = state;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        top: "40%",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 50,
-          height: "100%",
-          width: "100%",
-          textAlign: "center",
-        }}
-      >
-        {translate("afterGame.youFinished", { lives, points })}
+      <div className="home-page-picture">
+          <div className="home-page-layover">
+              <div className="home-page-container end-page-container">
+                  <div style={{fontFamily:"sans-serif", marginBottom: 20}}>
+                      {translate("afterGame.youFinished")}
+                  </div>
+                  <div style={{fontSize: 30, fontFamily: 'Storytelling'}}>
+                      {translate("afterGame.statistics", { lives, points })}
+                  </div>
+                  <div
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    <Link to="/">
+                      <button className="next-buttons endgame-buttons">{translate("afterGame.backToMenu")}</button>
+                    </Link>
+                  </div>
+                  <div style={{
+                      fontFamily: "sans-serif"
+                  }}>
+                    <p>{translate("afterGame.enterNameForLeaderboard")}</p>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={addedToLeaderboard}
+                      className="leaderboard-input"
+                    />
+                    <button className="next-buttons save-button"
+                      onClick={() => {
+                        appendLeaderboard({
+                          name,
+                          lives,
+                          points,
+                          field: id,
+                          date: new Date(),
+                        });
+                        setAddedToLeaderboard(true);
+                      }}
+                      disabled={addedToLeaderboard}
+                    >
+                      {translate("afterGame.save")}
+                    </button>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <Link to="/">
-          <button>{translate("afterGame.backToMenu")}</button>
-        </Link>
-      </div>
-      <div>
-        <p>{translate("afterGame.enterNameForLeaderboard")}</p>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          disabled={addedToLeaderboard}
-        />
-        <button
-          onClick={() => {
-            appendLeaderboard({
-              name,
-              lives,
-              points,
-              field: id,
-              date: new Date(),
-            });
-            setAddedToLeaderboard(true);
-          }}
-          disabled={addedToLeaderboard}
-        >
-          {translate("afterGame.save")}
-        </button>
-      </div>
-    </div>
   );
 };

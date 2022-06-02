@@ -24,6 +24,7 @@ import TutorialFive from "./TutorialFive";
 import { PlayingFieldDefinition } from "../playingFieldDefinition";
 import ExitDoor from "./ExitDoor";
 import HelpButton from "./HelpButton";
+import EndButton from "./EndButton";
 
 const PlayingField: FC<{
   field: PlayingFieldDefinition;
@@ -135,6 +136,7 @@ const PlayingField: FC<{
       }}
     >
         <HelpButton showTutorial={() => setTutorialStep(1)}/>
+        <EndButton/>
       {platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
