@@ -2,7 +2,6 @@ import { FC, useEffect, useRef, useState } from "react";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
-import { playingField } from "../playingFieldDefinition";
 import usePhysicsController, {
   PLAYER_HEIGHT,
 } from "../hooks/usePhysicsController";
@@ -16,13 +15,31 @@ import SoundMuteUn from "./SoundMuteUn";
 import useKeyboardController from "../hooks/useKeyboardController";
 import { useAnimationFrame } from "../hooks/useAnimationFrame";
 import useScrollController from "../hooks/useScrollController";
+import useGameController from "../hooks/useGameController";
+import TutorialOne from "./TutorialOne";
+import TutorialTwo from "./TutorialTwo";
+import TutorialThree from "./TutorialThree";
+import TutorialFour from "./TutorialFour";
+import TutorialFive from "./TutorialFive";
+import { PlayingFieldDefinition } from "../playingFieldDefinition";
+import ExitDoor from "./ExitDoor";
+import HelpButton from "./HelpButton";
+import EndButton from "./EndButton";
+import {useNavigate} from "react-router-dom";
 import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
 import JoyStickModule from "./JoyStickModule";
 
-const PlayingField: FC = () => {
+const PlayingField: FC<{
+  field: PlayingFieldDefinition;
+  showTutorial?: boolean;
+  onFinished: (lives: number, points: number) => void;
+}> = (props) => {
+  const { field, showTutorial, onFinished } = props;
+
   const [currentPoints, setPoints] = useState(0);
   const [currentLives, setLives] = useState(3);
+  const [tutorialStep, setTutorialStep] = useState(1);
 
   const gameOverSound = useRef(false);
   const pointDownSound = useRef(false);
@@ -41,7 +58,7 @@ const PlayingField: FC = () => {
       setTimeout(() => {
         setPoints(0);
         setLives(3);
-        setPlayerPos(playingField.playerStart);
+        setPlayerPos(field.playerStart);
         setTouchedFruits([]);
         gameOverSound.current = false;
       }, 1000); // making delay before ReSet
@@ -55,10 +72,10 @@ const PlayingField: FC = () => {
     onGround,
     canGoLeft,
     canGoRight,
-  } = usePhysicsController(playingField, () => {
-    // Bug: this doesnt work somehow
+    atExit,
+  } = usePhysicsController(field, () => {
+    setPlayerPos(field.playerStart);
     console.log("fell off");
-    setPlayerPos(playingField.playerStart);
   });
 
   useEffect(() => {
@@ -82,7 +99,18 @@ const PlayingField: FC = () => {
     null
   );
   const [facing, setFacing] = useState<"left" | "right">("right");
-  const { keyboardWalk } = useKeyboardController(jump);
+  const { keyboardWalk } = useKeyboardController(jump, () => {
+    if (atExit) {
+      console.log(
+        "Finished game with",
+        currentPoints,
+        "points and",
+        currentLives,
+        "lives"
+      );
+      onFinished(currentLives, currentPoints);
+    }
+  });
 
   useEffect(() => {
     setwalk(keyboardWalk);
@@ -102,8 +130,16 @@ const PlayingField: FC = () => {
     }
   });
 
-  const { fruits, setTouchedFruits } = useFruitController(
-    playingField.fruits,
+  const { resetGame } = useGameController(
+    field,
+    setLives,
+    setPoints,
+    setPlayerPos
+  );
+
+    const navigate = useNavigate();
+    const { fruits, setTouchedFruits } = useFruitController(
+    field.fruits,
     playerPos,
     (points) => {
       setPoints(currentPoints + points);
@@ -116,6 +152,10 @@ const PlayingField: FC = () => {
       if (currentPoints + points < 0 && points === -5) {
         setLives(currentLives - 1);
       }
+      if (currentLives - 1 <= 0) {
+        resetGame(setTouchedFruits);
+        navigate("/lose-game");
+      }
       console.log(`Touched fruit worth ${points} points`);
     }
   );
@@ -123,16 +163,19 @@ const PlayingField: FC = () => {
   // Player falling gets reset, works here falling works here!!
   let pos = { ...playerPos };
   if (pos.y + PLAYER_HEIGHT < 0) {
-    setPlayerPos(playingField.playerStart);
+    setPlayerPos(field.playerStart);
     setLives(currentLives - 1);
+    // should be in a new function!
+    if (currentLives - 1 <= 0) {
+      resetGame(setTouchedFruits);
+      navigate("/lose-game");
+    }
   }
 
-  let flowers = playingField.flowers;
-  let ladders = playingField.ladders;
-  let trees = playingField.trees;
+  const { flowers, ladders, trees, platforms } = field;
 
   const scrollOffset = useScrollController({
-    fieldWidth: playingField.width,
+    fieldWidth: field.width,
     playerPos,
   });
 
@@ -140,21 +183,24 @@ const PlayingField: FC = () => {
     <div
       style={{
         position: "relative",
-        width: `${playingField.width}px`,
+        width: `${field.width}px`,
         height: "100%",
         left: -scrollOffset.x,
         bottom: -scrollOffset.y,
       }}
-      // some placeholder interaction just to test the physics
-      /*onDoubleClick={() => setPlayerVerticalVelocity(300)}
-      onClick={(e) =>
-        setPlayerPos({
-          x: e.clientX,
-          y: (e.target as HTMLDivElement).clientHeight - e.clientY,
-        })
-      }*/
+      onClick={(e) => {
+          let el = e.target as HTMLElement | null;
+          while (el && !el.classList.contains("talk-bubble") && !el.classList.contains("help")) {
+              el = el.parentElement;
+          }
+          if (!el) {
+              setTutorialStep(0);
+          }
+      }}
     >
-      {playingField.platforms.map((p, i) => (
+        <HelpButton showTutorial={() => setTutorialStep(1)}/>
+        <EndButton/>
+      {platforms.map((p, i) => (
         <Platform key={i} x={p.x} y={p.y} width={p.width} height={p.height} />
       ))}
       {flowers.map((f, i) => (
@@ -169,14 +215,23 @@ const PlayingField: FC = () => {
       {fruits.map((f, i) => (
         <Fruit key={i} x={f.x} y={f.y} points={f.points} />
       ))}
+      <ExitDoor x={field.exit.x} y={field.exit.y} />
+      {}
       <Character
         x={playerPos.x}
         y={playerPos.y}
         jumping={!onGround}
-        walking={walk !== null}
+        walking={
+          (walk === "left" && canGoLeft) || (walk === "right" && canGoRight)
+        }
         facing={facing}
-      ></Character>
-      <div
+      />
+        {showTutorial && tutorialStep === 1? <TutorialOne onNext={() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
+            showTutorial && tutorialStep === 2? <TutorialTwo onNext={() => setTutorialStep(3)} onBack={() => setTutorialStep(1)} onClose={() => setTutorialStep(0)}/> :
+                showTutorial && tutorialStep === 3? <TutorialThree onNext={() => setTutorialStep(4)} onBack = {() => setTutorialStep(2)} onClose={() => setTutorialStep(0)}/> :
+                    showTutorial && tutorialStep === 4? <TutorialFour onNext={() => setTutorialStep(5)} onBack ={() => setTutorialStep(3)} onClose={() => setTutorialStep(0)}/> :
+            showTutorial && tutorialStep === 5? <TutorialFive onNext={() => setTutorialStep(6)} onClose={() => setTutorialStep(0)}/> : null}
+        <div
         style={{
           // by using position fixed this div will be placed at the same place on
           // the screen, regardless of the offset of the rest of the playing field

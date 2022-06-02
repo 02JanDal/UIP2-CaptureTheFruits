@@ -1,14 +1,17 @@
 import { FC } from "react";
 import imageBackground from "../images/background.png";
-import PlayingField from "./PlayingField";
 import ReactHowler from "react-howler";
-import { HOWLER_VOLUME } from "../settings";
 
 /**
- * The background for our playing field. A blue sky, maybe some clouds (possibly animated) etc.
+ * File: Background.tsx
+ *
+ * This file contains the  background for our playing field.
+ *
+ * @constructor The Background file
  */
 const Background: FC = () => {
   return (
+    // A div tag that returns the image of the background and covers the full screen
     <div
       style={{
         height: "100%",
@@ -20,8 +23,6 @@ const Background: FC = () => {
         backgroundRepeat: "repeat",
       }}
     >
-
-
       <ReactHowler
         src="/sounds/background.mp3"
         preload={true}
@@ -31,19 +32,7 @@ const Background: FC = () => {
         volume={0.07}
       />
     </div>
-    // <img
-    //     src={imageBackground}
-    //     alt=""
-    //     style={{
-    //       height: "100%",
-    //       width: "100%",
-    //       overflow: "hidden",
-    //       objectFit: "cover",
-    //       objectPosition: "top",
-    //         backgroundImage: imageBackground,
-    //         backgroundRepeat: "repeat",
-    //     }}
-    // />
   );
 };
+// Exporting the background to be used in the playing field
 export default Background;
