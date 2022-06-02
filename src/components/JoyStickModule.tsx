@@ -2,39 +2,75 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Joystick, JoystickShape } from "react-joystick-component";
 import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
 
-const JoyStickModule: FC<{ jump: () => void; onWalk: (d: number) => void }> = (
+const JoyStickModule: FC<{ jump: () => void; onwalk: (d: string) => void }> = (
   props
 ) => {
-
-  const joyStickMoveMargin = useRef(8);
+  const joyStickSize = useRef(80);
+  const joyStickMoveMargin = useRef(16);
+  const joyStickLastMove = useRef("");
   const [jumpPressed, setJumpPressed] = useState(false);
 
-  const changeJoyStick = function (event: IJoystickUpdateEvent) {
+
+  /*Testing*/
+    /*useEffect(() => {
+        console.log("joyStrickMove => " + joyStickLastMove.current );
+    }, [joyStickLastMove.current]);
+*/
+
+    const changeJoyStick = function (event: IJoystickUpdateEvent) {
     if (event.type == "move") {
-      /* Left */
-      if (event.x !== null && event.x <= joyStickMoveMargin.current * -1) {
-        props.onWalk(-1);
-      }
-
-      /* Right */
-      if (event.x !== null && event.x >= joyStickMoveMargin.current) {
-        props.onWalk(1);
-      }
-
-      /* Jump */
+        //console.log("move x => " + event.x + " y => "+ event.y);
       if (
-        !jumpPressed &&
+        joyStickLastMove.current != "" &&
+        event.x !== null &&
+        event.x > -1 * joyStickMoveMargin.current &&
+        event.x < joyStickMoveMargin.current &&
         event.y !== null &&
-        event.y >= joyStickMoveMargin.current
+        event.y > -1 * joyStickMoveMargin.current &&
+        event.y < joyStickMoveMargin.current
       ) {
-        setJumpPressed(true);
-        props.jump();
-        setTimeout(() => {
-          setJumpPressed(false);
-        }, 1000); // making delay to keyup as after jump complete
-      }
+          /* Idle */
+        props.onwalk("");
+        joyStickLastMove.current = "";
+      } else {
+          if (
+              /* Left */
+              event.x !== null &&
+              event.x <= joyStickMoveMargin.current * -1 &&
+              event.x >= -1 * (joyStickSize.current / 2)
+          ) {
+              joyStickLastMove.current = "left";
+              props.onwalk("left");
+          }
+          if (
+              /* Right */
+              event.x !== null &&
+              event.x >= joyStickMoveMargin.current &&
+              event.x <= joyStickSize.current / 2
+          ) {
+              joyStickLastMove.current = "right";
+              props.onwalk("right");
+          }
+          if (
+              /* Jump */
+              !jumpPressed &&
+              event.y !== null &&
+              event.y >= joyStickMoveMargin.current &&
+              event.y <= joyStickSize.current / 2
+          ) {
+              joyStickLastMove.current = "jump";
+              setJumpPressed(true);
+              props.jump();
+              setTimeout(() => {
+                  setJumpPressed(false);
+              }, 1000); // making delay to keyup as after jump complete
+          }
+
+      } // End else
+
     } else if (event.type == "stop") {
-      props.onWalk(0);
+      props.onwalk("");
+      joyStickLastMove.current = "";
     } /* else if(event.type == "start"){
     }*/
   };
@@ -52,13 +88,12 @@ const JoyStickModule: FC<{ jump: () => void; onWalk: (d: number) => void }> = (
       className="playing-field-info"
     >
       <Joystick
-        size={80}
-        minDistance={50}
+        size={joyStickSize.current}
         baseShape={JoystickShape.Square}
         stickShape={JoystickShape.Square}
-        throttle={250}
         baseColor={"#ca9b33"}
         stickColor={"#23af16"}
+        throttle={250}
         move={changeJoyStick}
         start={changeJoyStick}
         stop={changeJoyStick}
