@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
 export default function useKeyboardController(onJump: () => void) {
-  const [walk, setWalk] = useState<null | "left" | "right">(null);
+  const [keyboardWalk, setKeyboardWalk] = useState<null | "left" | "right">(null);
   const [leftDown, setLeftDown] = useState(false);
   const [rightDown, setRightDown] = useState(false);
 
   const downHandler = ({ code }: KeyboardEvent) => {
     if (code === "ArrowLeft") {
-      setWalk("left");
+      setKeyboardWalk("left");
       setLeftDown(true);
     } else if (code === "ArrowRight") {
-      setWalk("right");
+      setKeyboardWalk("right");
       setRightDown(true);
     } else if (code === "Space" || code === "ArrowUp") {
       onJump();
@@ -19,10 +19,10 @@ export default function useKeyboardController(onJump: () => void) {
   const upHandler = ({ code }: KeyboardEvent) => {
     if (code === "ArrowLeft") {
       setLeftDown(false);
-      setWalk(rightDown ? "right" : null);
+      setKeyboardWalk(rightDown ? "right" : null);
     } else if (code === "ArrowRight") {
       setRightDown(false);
-      setWalk(leftDown ? "left" : null);
+      setKeyboardWalk(leftDown ? "left" : null);
     }
   };
 
@@ -36,5 +36,5 @@ export default function useKeyboardController(onJump: () => void) {
     };
   });
 
-  return { walk };
+  return { keyboardWalk };
 }

@@ -26,6 +26,7 @@ const PlayingField: FC = () => {
   const pointDownSound = useRef(false);
   const pointUpSound = useRef(false);
 
+
   // Observing currentLives
   useEffect(() => {
     if (currentLives <= 0) {
@@ -59,19 +60,47 @@ const PlayingField: FC = () => {
     setPlayerPos(playingField.playerStart);
   });
 
+
+  useEffect(() => {
+    if (currentLives <= 0) {
+      gameOverSound.current = true;
+    }
+  }, [currentLives]);
+
+
+  function setJoyStickWalk(d : number){
+    console.log("joystickWalk  =>  " + d );
+    if(d == -1){
+      setJoystickWalk("left");
+    } else if(d == 1){
+      setJoystickWalk("right");
+    } else {
+      setJoystickWalk(null);
+    }
+  }
+  const [walk, setwalk] = useState<null | "left" | "right">(null);
+  const [joystickWalk, setJoystickWalk] = useState<null | "left" | "right">(null);
   const [facing, setFacing] = useState<"left" | "right">("right");
-  const { walk } = useKeyboardController(jump);
+  const { keyboardWalk } = useKeyboardController(jump);
+
+  useEffect(() => {
+    setwalk( keyboardWalk );
+  }, [keyboardWalk]);
+  useEffect(() => {
+    setwalk( joystickWalk );
+  }, [joystickWalk]);
+
+
   useAnimationFrame((delta) => {
     const PIXEL_PER_MS = 1 / 8;
-    if (walk === "left" && canGoLeft) {
+    if ( walk === "left" && canGoLeft) {
       setPlayerPos((p) => ({ y: p.y, x: p.x - PIXEL_PER_MS * delta }));
-      setFacing(walk);
+      setFacing( walk );
     } else if (walk === "right" && canGoRight) {
       setPlayerPos((p) => ({ y: p.y, x: p.x + PIXEL_PER_MS * delta }));
       setFacing(walk);
     }
   });
-
 
 
   const { fruits, setTouchedFruits } = useFruitController(
@@ -166,7 +195,7 @@ const PlayingField: FC = () => {
         <Points points={currentPoints} />
       </div>
 
-      <JoyStickModule/>
+      <JoyStickModule  jump={jump} onWalk={setJoyStickWalk}/>
 
       <ReactHowler
         src="/sounds/background.mp3"

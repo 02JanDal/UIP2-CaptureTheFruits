@@ -2,118 +2,46 @@ import { FC, useEffect, useRef, useState } from "react";
 import { Joystick, JoystickShape } from "react-joystick-component";
 import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
 
-const JoyStickModule: FC = (props) => {
+const JoyStickModule: FC<{ jump: () => void; onWalk: (d: number) => void }> = (
+  props
+) => {
 
   const joyStickMoveMargin = useRef(8);
-
   const [jumpPressed, setJumpPressed] = useState(false);
-  const rightPressed = useRef(false);
-  const leftPressed = useRef(false);
-  /*
-  * Testing
-  * */
-  useEffect(() => {
-    console.log("jumpPressed " + jumpPressed)
-  }, [jumpPressed]);
-  useEffect(() => {
-    console.log("rightPressed " + rightPressed.current)
-  }, [rightPressed.current]);
-  useEffect(() => {
-    console.log("leftPressed " + leftPressed.current)
-  }, [leftPressed.current]);
-
-  const keyUpLeft = function(){
-    if (leftPressed.current) {
-      leftPressed.current = false;
-      window.dispatchEvent(new KeyboardEvent('keyup', {
-        key: "ArrowLeft", keyCode: 37, code: "ArrowLeft", which: 37,
-        shiftKey: false, ctrlKey: false, metaKey: false
-      }));
-    }
-  }
-
-  const keyUpRight = function(){
-    if (rightPressed.current) {
-      rightPressed.current = false;
-      window.dispatchEvent(new KeyboardEvent('keyup', {
-        key: "ArrowRight", keyCode: 39, code: "ArrowRight", which: 39,
-        shiftKey: false, ctrlKey: false, metaKey: false
-      }));
-    }
-  }
 
   const changeJoyStick = function (event: IJoystickUpdateEvent) {
-
-    if(event.type == "move") {
-      /*
-      * Left
-      * */
-      if( !leftPressed.current && event.x !== null && event.x <= (joyStickMoveMargin.current * -1) ){
-        if(rightPressed.current) keyUpRight();
-        window.dispatchEvent(new KeyboardEvent('keydown', {
-          key: "ArrowLeft", keyCode: 37, code: "ArrowLeft", which: 37,
-          shiftKey: false, ctrlKey: false, metaKey: false
-        }));
-        window.dispatchEvent(new KeyboardEvent('keypress', {
-          key: "ArrowLeft", keyCode: 37, code: "ArrowLeft", which: 37,
-          shiftKey: false, ctrlKey: false, metaKey: false
-        }));
-        leftPressed.current = true;
+    if (event.type == "move") {
+      /* Left */
+      if (event.x !== null && event.x <= joyStickMoveMargin.current * -1) {
+        props.onWalk(-1);
       }
 
-      /*
-      * Right
-      * */
-      if( !rightPressed.current && event.x !== null && event.x >= joyStickMoveMargin.current){
-        if(leftPressed.current) keyUpLeft();
-        window.dispatchEvent(new KeyboardEvent('keydown', {
-          key: "ArrowRight", keyCode: 39, code: "ArrowRight", which: 39,
-          shiftKey: false, ctrlKey: false, metaKey: false
-        }));
-        window.dispatchEvent(new KeyboardEvent('keypress', {
-          key: "ArrowRight", keyCode: 39, code: "ArrowRight", which: 39,
-          shiftKey: false, ctrlKey: false, metaKey: false
-        }));
-        rightPressed.current = true;
+      /* Right */
+      if (event.x !== null && event.x >= joyStickMoveMargin.current) {
+        props.onWalk(1);
       }
 
-      /*
-      * jump move
-      * */
-      if(!jumpPressed && event.y !== null && event.y >= joyStickMoveMargin.current) {
-          setJumpPressed(true);
-          window.dispatchEvent(new KeyboardEvent('keydown', {
-            key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
-            shiftKey: false, ctrlKey: false, metaKey: false
-          }));
-          setTimeout(() => {
-            setJumpPressed(false);
-            window.dispatchEvent(new KeyboardEvent('keyup', {
-              key: "ArrowUp", keyCode: 38, code: "ArrowUp", which: 38,
-              shiftKey: false, ctrlKey: false, metaKey: false
-            }));
-          }, 1000); // making delay to keyup as after jump complete
-        }
-
-    } else if(event.type == "start"){
-
-      /*setJumpPressed(false);
-      rightPressed.current = false;
-      leftPressed.current = false;*/
-
-    } else if(event.type == "stop"){
-      keyUpLeft();
-      keyUpRight();
-    }
+      /* Jump */
+      if (
+        !jumpPressed &&
+        event.y !== null &&
+        event.y >= joyStickMoveMargin.current
+      ) {
+        setJumpPressed(true);
+        props.jump();
+        setTimeout(() => {
+          setJumpPressed(false);
+        }, 1000); // making delay to keyup as after jump complete
+      }
+    } else if (event.type == "stop") {
+      props.onWalk(0);
+    } /* else if(event.type == "start"){
+    }*/
   };
-
-
 
   return (
     <div
       style={{
-        // by using position fixed this div will be placed at the same place on
-        // the screen, regardless of the offset of the rest of the playing field
         position: "fixed",
         top: 200,
         left: 40,
@@ -123,18 +51,18 @@ const JoyStickModule: FC = (props) => {
       }}
       className="playing-field-info"
     >
-      <Joystick size={80}
-                minDistance={50}
-                baseShape={JoystickShape.Square}
-                stickShape={JoystickShape.Square}
-                throttle={250}
-                baseColor={"#ca9b33"}
-                stickColor={"#23af16"}
-                move={changeJoyStick}
-                start={changeJoyStick}
-                stop={changeJoyStick}
+      <Joystick
+        size={80}
+        minDistance={50}
+        baseShape={JoystickShape.Square}
+        stickShape={JoystickShape.Square}
+        throttle={250}
+        baseColor={"#ca9b33"}
+        stickColor={"#23af16"}
+        move={changeJoyStick}
+        start={changeJoyStick}
+        stop={changeJoyStick}
       ></Joystick>
-
     </div>
   );
 };
