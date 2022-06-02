@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 
+/**
+ * File: useKeyboardController.ts
+ *
+ * This file contains the React hook to the keyboard controller
+ * for the user to move the player around in the game.
+ *
+ * @param onJump The function jump that triggers the character's speed/velocity and position change
+ * @param onUseObject The function onUseObject that triggers the current lives and points are recorded and that the game is reset
+ * when the user completes the game
+ */
+
 export default function useKeyboardController(
   onJump: () => void,
   onUseObject: () => void

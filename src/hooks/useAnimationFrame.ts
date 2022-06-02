@@ -1,6 +1,16 @@
-// based on code from https://css-tricks.com/using-requestanimationframe-with-react-hooks/
 import { useCallback, useEffect, useRef } from "react";
 
+/**
+ * File: UseAnimationFrame.ts
+ *
+ * This file contains the React hooks to animate certain elements.
+ * In our case, for example, to animate the character movement when
+ * the character moves or falls from the sky.
+ *
+ * The code is based from:
+ * https://css-tricks.com/using-requestanimationframe-with-react-hooks/
+ *
+ */
 export const useAnimationFrame = (
   callback: (time: DOMHighResTimeStamp) => void
 ) => {
