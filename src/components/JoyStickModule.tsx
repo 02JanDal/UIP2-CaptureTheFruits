@@ -6,13 +6,26 @@ const JoyStickModule: FC<{
   jump: () => void;
   onWalk: (d: "left" | "right" | null) => void;
 }> = (props) => {
+  /*Size of JoyStick*/
   const joyStickSize = useRef(80);
+  /*JoyStick margin from center, where idle state consider*/
   const joyStickMoveMargin = useRef(10);
+
+  /*
+  * Keep record of joystick last move if current direction of joystick also same then don't need to change direction.
+  * */
   const joyStickLastMove = useRef("");
+
+  /*
+  * If jump is called then we need to give gap until jump is complete. so to manage the wait we use jumpPressed State
+  * */
   const [jumpPressed, setJumpPressed] = useState(false);
 
   const changeJoyStick = function (event: IJoystickUpdateEvent) {
     if (event.type === "move") {
+      /*
+      * Idle checking with respect to joyStickMargin from center to clear previous move.
+      * */
       if (
         joyStickLastMove.current !== "" &&
         event.x !== null &&
@@ -26,6 +39,8 @@ const JoyStickModule: FC<{
         props.onWalk(null);
         joyStickLastMove.current = "";
       } else {
+        /*
+        * Left Right direction and jumping checking when values exceed from the joyStickMargin */
         if (
           /* Left */
           event.x !== null &&
@@ -53,8 +68,14 @@ const JoyStickModule: FC<{
         ) {
           joyStickLastMove.current = "jump";
           setJumpPressed(true);
+          /*
+          * calling Jump function which get in constructor
+          * */
           props.jump();
           setTimeout(() => {
+            /*
+            * Reset jump state after a sec.
+            * */
             setJumpPressed(false);
           }, 1000); // making delay to keyup as after jump complete
         }
@@ -79,13 +100,9 @@ const JoyStickModule: FC<{
     >
       <Joystick
         size={joyStickSize.current}
-        /*
-        baseShape={JoystickShape.Square}
-        stickShape={JoystickShape.Square}
-*/
         baseColor="#ca9b33"
         stickColor="#23af16"
-        throttle={250}
+        throttle={250} //The throttling rate of the move callback
         move={changeJoyStick}
         start={changeJoyStick}
         stop={changeJoyStick}
