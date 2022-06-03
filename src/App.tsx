@@ -28,7 +28,6 @@ import ReactHowler from "react-howler";
  * @constructor
  */
 const App: FC = () => {
-
   // Initialize the useNavigate() to navigate to different pages
   const navigate = useNavigate();
 
@@ -77,7 +76,7 @@ const App: FC = () => {
         <SoundContext.Provider value={{ muted, setMuted }}>
           {/* Setting the background music using ReactHowler */}
           <ReactHowler
-            src="/sounds/background.mp3"
+            src="sounds/background.mp3"
             preload={true}
             loop={true}
             html5={true}

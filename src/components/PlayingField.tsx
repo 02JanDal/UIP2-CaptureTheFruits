@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Platform from "./Platform";
 import Character from "./Character";
 import Fruit from "./Fruit";
@@ -47,7 +47,6 @@ const PlayingField: FC<{
   showTutorial?: boolean;
   onFinished: (lives: number, points: number) => void;
 }> = (props) => {
-
   // The field data of all components, the showTutorial boolean, and the onFinished function
   const { field, showTutorial, onFinished } = props;
 
@@ -57,19 +56,19 @@ const PlayingField: FC<{
   const pointDownSound = useRef(false);
   const pointUpSound = useRef(false);
 
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false);
   const handleResize = () => {
     if (window.innerWidth <= 425) {
-      setIsMobile(true)
+      setIsMobile(true);
     } else {
-      setIsMobile(false)
+      setIsMobile(false);
     }
-  }
+  };
 
-// create an event listener
+  // create an event listener
   useEffect(() => {
-    window.addEventListener("resize", handleResize)
-  })
+    window.addEventListener("resize", handleResize);
+  });
 
   const {
     playerPos,
@@ -231,16 +230,14 @@ const PlayingField: FC<{
         <SoundMuteUn />
         <Lives lives={currentLives} />
         <Points points={currentPoints} />
-
       </div>
 
-      { !showTutorial && isMobile ? (
-          <JoyStickModule jump={jump} onWalk={setJoystickWalk} />
-      ) : null }
-
+      {!showTutorial && isMobile ? (
+        <JoyStickModule jump={jump} onWalk={setJoystickWalk} />
+      ) : null}
 
       <ReactHowler
-        src="/sounds/background.mp3"
+        src="sounds/background.mp3"
         preload={true}
         loop={true}
         html5={true}
@@ -249,7 +246,7 @@ const PlayingField: FC<{
       />
 
       <ReactHowler
-        src="/sounds/pointDown.wav"
+        src="sounds/pointDown.wav"
         preload={true}
         html5={true}
         loop={false}
@@ -261,7 +258,7 @@ const PlayingField: FC<{
       />
 
       <ReactHowler
-        src="/sounds/pointUp.wav"
+        src="sounds/pointUp.wav"
         preload={true}
         html5={true}
         loop={false}

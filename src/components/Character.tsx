@@ -59,8 +59,8 @@ const Character: FC<
   ][walkIndex];
 
   return (
-      // Return the image of the character and changing the images while the character
-      // is walking or jumping
+    // Return the image of the character and changing the images while the character
+    // is walking or jumping
     <PositionableDiv x={x} y={y} width={PLAYER_WIDTH} height={PLAYER_HEIGHT}>
       <img
         src={jumping ? imageJump : walking ? imageWalk : imageStand}
@@ -71,7 +71,7 @@ const Character: FC<
       />
 
       <ReactHowler
-        src="/sounds/jump400.mp3"
+        src="sounds/jump400.mp3"
         preload={true}
         html5={true}
         loop={false}
@@ -83,7 +83,7 @@ const Character: FC<
       />
 
       <ReactHowler
-        src="/sounds/walk.wav"
+        src="sounds/walk.wav"
         preload={true}
         html5={true}
         loop={true}
