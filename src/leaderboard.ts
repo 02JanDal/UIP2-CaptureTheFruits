@@ -17,8 +17,8 @@ export type Leaderboard = {
 }[];
 
 /**
- * The function to add the date of the score noted in leaderboard
- *
+ * The function to converts the leaderboard object to a
+ * JSON string that can be stored in localStorag
  * @param str The string
  */
 export function deserializeLeaderboard(str: string): Leaderboard {

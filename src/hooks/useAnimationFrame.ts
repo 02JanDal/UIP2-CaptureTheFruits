@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef } from "react";
 /**
  * File: UseAnimationFrame.ts
  *
- * This file contains the React hooks to animate certain elements.
+ * This file contains the React hooks to call the provided callback at
+ * intervals when it is good to update rendered elements, as determined by the browser.
  * In our case, for example, to animate the character movement when
  * the character moves or falls from the sky.
  *
