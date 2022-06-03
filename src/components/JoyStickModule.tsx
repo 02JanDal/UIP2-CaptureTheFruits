@@ -2,6 +2,16 @@ import { FC, useRef, useState } from "react";
 import { Joystick } from "react-joystick-component";
 import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
 
+/**
+ * File: JoyStickModule.tsx
+ *
+ * This file contains the joystick module for the mobile view.
+ *
+ * @param props The jump function that will be executed when the user jumps,
+ * the onWalk function that will be executed when the user either moves to
+ * the left or right or standing still
+ * @constructor The JoysStickModule file
+ */
 const JoyStickModule: FC<{
   jump: () => void;
   onWalk: (d: "left" | "right" | null) => void;
@@ -86,6 +96,7 @@ const JoyStickModule: FC<{
     }
   };
 
+  // Return the display of the joystick
   return (
     <div
       style={{
@@ -110,4 +121,5 @@ const JoyStickModule: FC<{
     </div>
   );
 };
+// Exporting the JoyStickModule to be used in the playing field
 export default JoyStickModule;

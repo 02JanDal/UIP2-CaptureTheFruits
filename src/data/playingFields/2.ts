@@ -1,5 +1,15 @@
 import { PlayingFieldDefinition } from "../../playingFieldDefinition";
 
+/**
+ * File: 2.ts
+ *
+ * This file contains all the data of the components' positions
+ * in the second playing field, such as the width of the playing field,
+ * the player's starting position, the exit door position,
+ * the platforms position, the fruits position, the trees
+ * position, the flowers position, and the ladder position.
+ *
+ */
 export const playingField2: PlayingFieldDefinition = {
   width: 500,
   playerStart: { x: 50, y: 150 },
