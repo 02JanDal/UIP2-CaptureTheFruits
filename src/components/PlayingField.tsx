@@ -28,14 +28,30 @@ import ReactHowler from "react-howler";
 import { HOWLER_VOLUME } from "../settings";
 import JoyStickModule from "./JoyStickModule";
 
+/**
+ * File: PlayingField.tsx
+ *
+ * The file contains the main playing field that the user
+ * will play in. It consists of all the components/elements
+ * of the game such as the character, the fruits, the tutorial system,
+ * the lives and points counter, and the joystick.
+ *
+ * @param props The field data, the showTutorial boolean (whether
+ * the tutorial is shown), and the onFinished function that will be executed
+ * when the user completes the game
+ *
+ * @constructor The PlayingField file
+ */
 const PlayingField: FC<{
   field: PlayingFieldDefinition;
   showTutorial?: boolean;
   onFinished: (lives: number, points: number) => void;
 }> = (props) => {
 
+  // The field data of all components, the showTutorial boolean, and the onFinished function
   const { field, showTutorial, onFinished } = props;
 
+  // Setting the step number
   const [tutorialStep, setTutorialStep] = useState(1);
 
   const pointDownSound = useRef(false);
