@@ -1,5 +1,5 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { Joystick, JoystickShape } from "react-joystick-component";
+import { FC, useRef, useState } from "react";
+import { Joystick } from "react-joystick-component";
 import { IJoystickUpdateEvent } from "react-joystick-component/build/lib/Joystick";
 
 const JoyStickModule: FC<{
@@ -79,7 +79,7 @@ const JoyStickModule: FC<{
     >
       <Joystick
         size={joyStickSize.current}
-/*
+        /*
         baseShape={JoystickShape.Square}
         stickShape={JoystickShape.Square}
 */

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import muteImage from "../images/mute.png";
 import unMuteImage from "../images/unmute.png";
 import { useSound } from "../sound";
@@ -12,19 +12,19 @@ import { useSound } from "../sound";
  * @constructor The SoundMuteUn file
  */
 const SoundMuteUn: FC = () => {
-
-    // To initialize the sound in the background music and
-    // set whether the sound is muted or not
+  // To initialize the sound in the background music and
+  // set whether the sound is muted or not
   const { muted, setMuted } = useSound();
 
   return (
-      // Return the sound button toggle in the playing field
+    // Return the sound button toggle in the playing field
     <div>
       <img
         onClick={() => setMuted(!muted)}
         src={muted ? muteImage : unMuteImage}
         width="24"
         height="24"
+        alt=""
       />
     </div>
   );

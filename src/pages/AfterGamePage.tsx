@@ -1,7 +1,5 @@
-import React, { FC, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import PlayingField from "../components/PlayingField";
-import playingFields from "../data/playingFields";
+import React, { FC, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslate } from "react-polyglot";
 import { useAppendLeaderboard } from "../leaderboard";
 
@@ -30,15 +28,14 @@ function isGameState(obj: any): obj is GameState {
  * @constructor The AfterGamePage file
  */
 export const AfterGamePage: FC = () => {
-
-    // Initialize the useNavigate() function to navigate to another page
+  // Initialize the useNavigate() function to navigate to another page
   const navigate = useNavigate();
 
   // Initialize the useTranslate() function to access the strings/text in the dictionary
   const translate = useTranslate();
 
   // Initialize useAppendLeaderboard hook to append the leaderboard in case
-    // the player adds their name to the leaderboard
+  // the player adds their name to the leaderboard
   const appendLeaderboard = useAppendLeaderboard();
 
   // Set the name in the leaderboard
@@ -59,60 +56,65 @@ export const AfterGamePage: FC = () => {
   const { id, lives, points } = state;
 
   return (
-      // Return the end game page when the user completes the game
-      <div className="home-page-picture">
-          <div className="home-page-layover">
-              <div className="home-page-container end-page-container">
-                  <div style={{fontFamily:"sans-serif", marginBottom: 20}}>
-                      {translate("afterGame.youFinished")}
-                  </div>
-
-                  {/*Showing the lives and points */}
-                  <div style={{fontSize: 30, fontFamily: 'Storytelling'}}>
-                      {translate("afterGame.statistics", { lives, points })}
-                  </div>
-
-                  {/*Button to go back to main page after user completes the game*/}
-                  <div
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    <Link to="/">
-                      <button className="next-buttons endgame-buttons">{translate("afterGame.backToMenu")}</button>
-                    </Link>
-                  </div>
-
-                  {/*Button to input their name to the leaderboard*/}
-                  <div style={{
-                      fontFamily: "sans-serif"
-                  }}>
-                    <p>{translate("afterGame.enterNameForLeaderboard")}</p>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={addedToLeaderboard}
-                      className="leaderboard-input"
-                    />
-                    <button className="next-buttons save-button"
-                      onClick={() => {
-                        appendLeaderboard({
-                          name,
-                          lives,
-                          points,
-                          field: id,
-                          date: new Date(),
-                        });
-                        setAddedToLeaderboard(true);
-                      }}
-                      disabled={addedToLeaderboard}
-                    >
-                      {translate("afterGame.save")}
-                    </button>
-                  </div>
-              </div>
+    // Return the end game page when the user completes the game
+    <div className="home-page-picture">
+      <div className="home-page-layover">
+        <div className="home-page-container end-page-container">
+          <div style={{ fontFamily: "sans-serif", marginBottom: 20 }}>
+            {translate("afterGame.youFinished")}
           </div>
+
+          {/*Showing the lives and points */}
+          <div style={{ fontSize: 30, fontFamily: "Storytelling" }}>
+            {translate("afterGame.statistics", { lives, points })}
+          </div>
+
+          {/*Button to go back to main page after user completes the game*/}
+          <div
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <Link to="/">
+              <button className="next-buttons endgame-buttons">
+                {translate("afterGame.backToMenu")}
+              </button>
+            </Link>
+          </div>
+
+          {/*Button to input their name to the leaderboard*/}
+          <div
+            style={{
+              fontFamily: "sans-serif",
+            }}
+          >
+            <p>{translate("afterGame.enterNameForLeaderboard")}</p>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={addedToLeaderboard}
+              className="leaderboard-input"
+            />
+            <button
+              className="next-buttons save-button"
+              onClick={() => {
+                appendLeaderboard({
+                  name,
+                  lives,
+                  points,
+                  field: id,
+                  date: new Date(),
+                });
+                setAddedToLeaderboard(true);
+              }}
+              disabled={addedToLeaderboard}
+            >
+              {translate("afterGame.save")}
+            </button>
+          </div>
+        </div>
       </div>
+    </div>
   );
 };
